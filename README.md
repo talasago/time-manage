@@ -21,4 +21,3 @@ rails db:create
 
 rails s -b 0.0.0.0
   ブラウザからHello Railsが表示されることを確認します。
-gasa
