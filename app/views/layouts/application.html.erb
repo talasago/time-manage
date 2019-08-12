@@ -9,20 +9,10 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>  </head>
 
   <body>
-    <header class="navbar navbar-fixed-top navbar-inverse">
-      <div class="container">
-        <%= link_to "トップへ戻る", '#', id: "logo" %>
-        <nav>
-          <ul class="nav navbar-nav navbar-right">
-            <li><%= link_to "ホームへ",   '#' %></li>
-            <li><%= link_to "問い合わせ", '#' %></li>
-            <li><%= link_to "ログイン",   '#' %></li>
-          </ul>
-        </nav>
-      </div>
-    </header>
+    <%= render 'layouts/header' %>
     <div class="container">
       <%= yield %>
+      <%= render 'layouts/footer' %>
     </div>
   </body>
 </html>

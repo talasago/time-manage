@@ -3,6 +3,9 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.6.3'
 
+#bootstrap
+gem 'bootstrap-sass'
+
 #React.js
 gem 'react-rails'
 gem 'webpacker'
