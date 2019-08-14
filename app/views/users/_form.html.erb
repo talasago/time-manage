@@ -1,14 +1,14 @@
-<%= form_for(@user, url: yield(:url), html: {novalidate: 'novalidate'} ) do |f| %>
+<%= form_for(@user, url: yield(:url)) do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
 
-  <%= f.label :name %>
-  <%= f.text_field :name, class: 'form-control' %>
+  <%= f.label "ユーザー名" %>
+  <%= f.text_field :name, class: "form-control" %>
 
-  <%= f.label :password %>
-  <%= f.password_field :password, class: 'form-control' %>
+  <%= f.label "パスワード" %>
+  <%= f.password_field :password, class: "form-control" %>
 
-  <%= f.label :password_confirmation %>
-  <%= f.password_field :password_confirmation, class: 'form-control' %>
+  <%= f.label "パスワード(再確認)" %>
+  <%= f.password_field :password_confirmation, class: "form-control" %>
 
   <%= f.submit yield(:button_text), class: "btn btn-primary" %>
 <% end %>

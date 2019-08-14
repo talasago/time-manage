@@ -12,48 +12,33 @@ RSpec.feature "UserSignup", type: :feature do
   end
 
   describe "signup success" do
-    it "user insert and displayed 'ユーザー画面'" do
-      fill_in "name",	with: user_name
-      fill_in "password",	with: "password&4"
-      fill_in "password_confirmation",	with: "password&4"
+    it "user insert and displayed 'ユーザーホーム画面'" do
+      fill_in "user_name",	with: user_name
+      fill_in "user_password",	with: "password&4"
+      fill_in "user_password_confirmation",	with: "password&4"
       expect do
-        click_on "ユーザー新規登録"
+        click_on "アカウント作成"
       end.to change(User, :count).by(1)
 
-      expect(page).to redirect_to login_path
-      expect(page).to have_content("#{user_name}さん ようこそ")
+      expect(page).to have_content(user_name + "さん ようこそ")
+      expect(page).to have_content(user_name)
       expect(page).to have_title(user_name)
     end
   end
 
   describe "signup faild" do
-    context "password space in" do
-      it "user not insert because password invaild" do
-        fill_in "name",	with: user_name
-        fill_in "password",	with: " password&4 "
-        fill_in "password_confirmation",	with: " password&4 "
+    context "password_confirmation difference" do
+      it "user not insert because password_confirmation difference" do
+        fill_in "user_name",	with: user_name
+        fill_in "user_password",	with: "password"
+        fill_in "user_password_confirmation",	with: "password&4"
         expect do
-          click_on "ユーザー新規登録"
+           click_on "アカウント作成"
         end.not_to change(User, :count)
 
         expect(page).to have_css "div#error_explanation"
         expect(page).to have_css "div.field_with_errors"
-        expect(page).to have_css "form[action=""#{new_user_path}""]"
-      end
-    end
-
-    context "password_confirmation difference" do
-      it "user not insert because password_confirmation difference" do
-        fill_in "name",	with: user_name
-        fill_in "password",	with: "password"
-        fill_in "password_confirmation",	with: "password&4"
-        expect do
-           click_on "ユーザー新規登録"
-        end.not_to change(User, :count)
-
-        expect(page).to have_css'div#error_explanation'
-        expect(page).to have_css 'div.field_with_errors'
-        expect(page).to have_css 'form[action="/signup"]'
+        expect(page).to have_css "form[action=\"#{new_user_path}\"]"
       end
     end
   end
