@@ -8,21 +8,11 @@ RSpec.describe User, type: :model do
       password_confirmation: "foobarbaz"
     )
   end
-
   subject { @user }
 
-  #パスワードの前置後置空白⇨結合テスト
-
-  ##validationテスト（正常系）
-  #describe "is be valid" do
-  #  it { expect(@user).to be_valid }
-#
-  #  describe "password_disest password different" do
-  #    before { @user.save }
-  #    let(:found_user) { User.find_by(name: @user.name) }
-  #    it { expect(found_@user.password_disest).not_to eq(@user.password) }
-  #  end
-  #end
+  it "is be valid" do
+    expect(@user).to be_valid
+  end
 
   describe "name" do
     describe "invaild" do
@@ -107,7 +97,10 @@ RSpec.describe User, type: :model do
       let(:found_user) { User.find_by(name: @user.name) }
 
       context "when valid password" do
-        it { expect(found_user.authenticate(@user.password)).to be_truthy }
+        it "authenticate true and password_digest password difference" do
+          expect(found_user.authenticate(@user.password)).to be_truthy
+          expect(found_user.password_digest).not_to eq(@user.password)
+        end
       end
 
       context "when invalid password" do
