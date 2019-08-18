@@ -8,10 +8,10 @@
       <%= f.label "ユーザー名" %>
       <%= f.text_field :name, class: "form-control" %>
 
-      <%= f.label :password %>
+      <%= f.label "パスワード" %>
       <%= f.password_field :password, class: "form-control" %>
 
-      <%= f.submit "Log in", class: "btn btn-primary" %>
+      <%= f.submit "ログイン", class: "btn btn-primary" %>
     <% end %>
 
     <p>ユーザー登録がまだの方はコチラ <%= link_to "ユーザー新規登録", new_user_path %></p>
