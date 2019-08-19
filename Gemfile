@@ -6,6 +6,9 @@ ruby '2.6.3'
 #bootstrap
 gem 'bootstrap-sass'
 
+#jquery
+gem 'jquery-rails'
+
 #React.js
 gem 'react-rails'
 gem 'webpacker'

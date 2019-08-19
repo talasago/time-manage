@@ -11,6 +11,7 @@ RSpec.feature "UserLogin", type: :feature do
       expect(page).to have_title("ログイン")
       expect(page).to have_http_status(:ok)
       expect(page).to have_content("ログイン")
+      expect(page).to have_css("a[href=\"#{login_path}\"]")
     end
 
     it "'ユーザー新規登録' click to displayed 'ユーザー新規登録画面'" do
@@ -39,9 +40,8 @@ RSpec.feature "UserLogin", type: :feature do
       expect(page).to have_css("h1", text: @user.name)
       expect(page).to have_title(@user.name)
 
-      #expect(page).to have_css("a[half=?]", login_path, count: 0)
-      #expect(page).to have_css("a[half=?]", logout_path)
-      #expect(page).to have_css("a[half=?]", user_path(user))
+      expect(page).to have_css("a[href=\"#{logout_path}\"]")
+      expect(page).to have_css("a[href=\"#{user_path(@user)}\"]")
     end
   end
 
@@ -56,7 +56,7 @@ RSpec.feature "UserLogin", type: :feature do
 
         expect(page).to have_selector("div.alert.alert-danger", text: "ユーザー名またはパスワードが違います")
         visit root_path
-        expect(page).not_to have_css("div.alert alert-error")
+        expect(page).not_to have_css("div.alert.alert-danger")
       end
     end
   end
