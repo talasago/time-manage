@@ -25,6 +25,7 @@ RSpec.describe SessionsController, type: :controller do
         end.not_to change(User, :count)
         expect(flash[:success]).to eq "#{@user.name}さん おかえりなさい"
         expect(request).to redirect_to user_path(User.find_by(name: @user.name).id)
+        expect(session[:user_id]).to eq @user.id
       end
     end
 
@@ -40,7 +41,20 @@ RSpec.describe SessionsController, type: :controller do
         end.not_to change(User, :count)
         expect(flash[:danger]).to eq "ユーザー名またはパスワードが違います"
         expect(request.path_info).to eq login_path
+        expect(session[:user_id]).to eq nil
       end
+    end
+  end
+
+  describe "delete #destroy" do
+    it "redirect to 'ユーザーホーム画面'" do
+      expect do
+        delete :destroy
+      end.not_to change(User, :count)
+
+      expect(flash[:success]).to eq "ログアウトしました"
+      expect(request).to redirect_to root_path
+      expect(session[:user_id]).to eq nil
     end
   end
 end

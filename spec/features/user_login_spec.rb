@@ -26,7 +26,7 @@ RSpec.feature "UserLogin", type: :feature do
   end
 
   describe "login success" do
-    it "user login and displayed 'ユーザーホーム画面'" do
+    it "user login and displayed 'ユーザーホーム画面' and logout" do
 
       #factory読み込み
       fill_in "session_name",	with: @user.name
@@ -40,8 +40,17 @@ RSpec.feature "UserLogin", type: :feature do
       expect(page).to have_css("h1", text: @user.name)
       expect(page).to have_title(@user.name)
 
+      expect(page).not_to have_css("a[href=\"#{login_path}\"]")
       expect(page).to have_css("a[href=\"#{logout_path}\"]")
       expect(page).to have_css("a[href=\"#{user_path(@user)}\"]")
+
+      click_on "ユーザー情報"
+      click_on "ログアウト"
+
+      expect(page).to have_css("a[href=\"#{login_path}\"]")
+      expect(page).not_to have_css("a[href=\"#{logout_path}\"]")
+      expect(page).not_to have_css("a[href=\"#{user_path(@user)}\"]")
+
     end
   end
 
@@ -60,6 +69,6 @@ RSpec.feature "UserLogin", type: :feature do
       end
     end
   end
-  #ログアウト
+
   #セッションがない状態でuser/:idとURLを入れたらログインにリダイレクトするか。
 end
