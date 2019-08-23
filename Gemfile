@@ -3,6 +3,10 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.6.3'
 
+#full-calender
+gem 'fullcalendar-rails'
+gem 'momentjs-rails'
+
 #bootstrap
 gem 'bootstrap-sass'
 
