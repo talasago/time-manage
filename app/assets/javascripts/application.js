@@ -42,23 +42,25 @@
 //  });
 //});
 
-document.addEventListener('DOMContentLoaded', function() {
+$(document).ready(function() {
   $('#calendar').fullCalendar({
     //入力フォームを表示するためのボタン
     customButtons: {
-      eventInsButton: {
+      historyInsButton: {
         text: '新規行動履歴登録',
+        // モーダルウインドウ表示
         click: function() {
-           // タイトル初期化
+          //モーダルウインドウ初期化する
            $("#inputTitle").val("");
-           $('#inputScheduleForm').on('show.bs.modal', function (event) {
+           $('#inputHistoryForm').on('show.bs.modal', function (event) {
                setTimeout(function(){
                    $('#inputTitle').focus();
                }, 500);
            }).modal("show");
 
-           $('#inputYmdFrom').datetimepicker({locale: 'ja', format : 'YYYY年MM月DD日', useCurrent: false });
-
+          //日付ピッカー
+          $('.ymd').datetimepicker({format : 'YYYY/MM/DD'});
+          $('.Hm').datetimepicker({format : 'HH:mm'});
         }
 
       }
@@ -66,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ヘッダーのタイトルとボタン
     header: {
       // title, pre v, next, prevYear, nextYear, today
-      left: "today month,basicWeek eventInsButton",
+      left: "today month,basicWeek historyInsButton",
       center: "title",
       right: "prev next"
     },
