@@ -9,6 +9,7 @@ gem 'momentjs-rails'
 
 #bootstrap
 gem 'bootstrap-sass'
+gem 'bootstrap3-datetimepicker-rails'
 
 #jquery
 gem 'jquery-rails'

@@ -13,4 +13,5 @@
  *= require_self
  *= require fullcalendar
  *= require_tree .
+ *= require bootstrap-datetimepicker
  */

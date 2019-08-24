@@ -19,7 +19,7 @@
 //= require fullcalendar
 //= require fullcalendar/lang/ja
 //= require fullcalendar
-
+//= require bootstrap-datetimepicker
 //= require_tree .
 
 //document.addEventListener('DOMContentLoaded', function() {
@@ -49,8 +49,18 @@ document.addEventListener('DOMContentLoaded', function() {
       eventInsButton: {
         text: '新規行動履歴登録',
         click: function() {
-          alert('clicked the custom button!');
+           // タイトル初期化
+           $("#inputTitle").val("");
+           $('#inputScheduleForm').on('show.bs.modal', function (event) {
+               setTimeout(function(){
+                   $('#inputTitle').focus();
+               }, 500);
+           }).modal("show");
+
+           $('#inputYmdFrom').datetimepicker({locale: 'ja', format : 'YYYY年MM月DD日', useCurrent: false });
+
         }
+
       }
     },
     // ヘッダーのタイトルとボタン
