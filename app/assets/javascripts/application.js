@@ -13,14 +13,61 @@
 //= require rails-ujs
 //= require activestorage
 //= require turbolinks
-//= require_tree .
 //= require jquery
 //= require bootstrap
 //= require moment
 //= require fullcalendar
 //= require fullcalendar/lang/ja
+//= require fullcalendar
 
-$(document).ready(function(){
+//= require_tree .
+
+//document.addEventListener('DOMContentLoaded', function() {
+//  var calendarEl = document.getElementById('calendar');
+//
+//  var calendar = $("#calendar").fullCalendar(calendarEl, {
+//    defaultView: 'basicWeek',
+//    header: {
+//      left: "today month,basicWeek",
+//      center: "title",
+//      right: "prev next"
+//    },
+//    editable: true, // イベントを編集するか
+//    allDaySlot: false, // 終日表示の枠を表示するか
+//    eventDurationEditable: false, // イベント期間をドラッグしで変更するかどうか
+//    slotEventOverlap: false, // イベントを重ねて表示するか
+//    selectable: true,
+//    selectHelper: true,
+//
+//  });
+//});
+
+document.addEventListener('DOMContentLoaded', function() {
   $('#calendar').fullCalendar({
+    //入力フォームを表示するためのボタン
+    customButtons: {
+      eventInsButton: {
+        text: '新規行動履歴登録',
+        click: function() {
+          alert('clicked the custom button!');
+        }
+      }
+    },
+    // ヘッダーのタイトルとボタン
+    header: {
+      // title, pre v, next, prevYear, nextYear, today
+      left: "today month,basicWeek eventInsButton",
+      center: "title",
+      right: "prev next"
+    },
+    defaultView: 'agendaWeek'
   });
+  // 動的にオプションを変更する
+  //$('#calendar').fullCalendar('option', 'height', 700);
+
+  // カレンダーをレンダリング。表示切替時などに使用
+  //$('#calendar').fullCalendar('render');
+
+  // カレンダーを破棄（イベントハンドラや内部データも破棄する）
+  //$('#calendar').fullCalendar('destroy')
 });
