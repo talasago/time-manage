@@ -1,0 +1,2 @@
+class ActivityHistorys < ApplicationRecord
+end

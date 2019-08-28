@@ -10,10 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_12_133447) do
+ActiveRecord::Schema.define(version: 2019_08_24_082213) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "activity_historys", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "activity_name", null: false
+    t.bigint "category_id"
+    t.datetime "from_time", null: false
+    t.datetime "to_time", null: false
+    t.string "remarks"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "name", null: false
