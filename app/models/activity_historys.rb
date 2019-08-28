@@ -1,2 +1,0 @@
-class ActivityHistorys < ApplicationRecord
-end

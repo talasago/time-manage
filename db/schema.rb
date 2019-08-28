@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_24_082213) do
+ActiveRecord::Schema.define(version: 2019_08_28_145230) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "activity_historys", force: :cascade do |t|
+  create_table "activity_histories", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "activity_name", null: false
     t.bigint "category_id"

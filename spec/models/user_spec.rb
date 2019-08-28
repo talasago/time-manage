@@ -96,7 +96,7 @@ RSpec.describe User, type: :model do
       before { @user.save }
       let(:found_user) { User.find_by(name: @user.name) }
 
-      context "when valid password" do
+      context "when valid  password" do
         it "authenticate true and password_digest password difference" do
           expect(found_user.authenticate(@user.password)).to be_truthy
           expect(found_user.password_digest).not_to eq(@user.password)
@@ -106,6 +106,37 @@ RSpec.describe User, type: :model do
       context "when invalid password" do
         it { expect(found_user.authenticate("invalidpassword")).to be_falsey }
       end
+    end
+  end
+
+  describe "user activity_history relation" do
+    it "act_history insert to delete" do
+      expect do
+        @user.save
+        @user.activity_historys.create(
+          activity_name:  "user_acthistory_relation_test",
+          from_time: DateTime.parse("2019/08/23 15:00:00"),
+          to_time: DateTime.parse("2019/08/25 15:30:00")
+        )
+      end.to change(ActivityHistory, :count).by(1)
+
+      expect do
+        ActivityHistory.where(user_id: @user).destroy_all
+      end.to change(ActivityHistory, :count).by(-1)
+
+      expect(User.where(name: @user.name)).to exist
+    end
+
+    it "act_history insert and user delete" do
+      @user.save
+      @user.activity_historys.create(
+        activity_name:  "user_acthistory_relation_test2",
+        from_time: DateTime.parse("2019/08/23 15:00:04"),
+        to_time: DateTime.parse("2019/08/25 15:30:06")
+      )
+      expect do
+        @user.destroy
+      end.to change(ActivityHistory, :count).by(-1).and change(User, :count).by(-1)
     end
   end
 end
