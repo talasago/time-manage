@@ -5,8 +5,8 @@ Rails.application.routes.draw do
   get    '/login',          to:  'sessions#new'
   post   '/login',          to:  'sessions#create'
   delete '/logout',         to:  'sessions#destroy'
-  post   '/act_historys/new',    to:  'activity_historys#create'
-  get    '/act_historys',         to:  'activity_historys#show'
+  post   '/act_histories/new',    to:  'activity_histories#create'
+  get    '/act_histories',        to:  'activity_histories#show'
 
   resources :users
 end
