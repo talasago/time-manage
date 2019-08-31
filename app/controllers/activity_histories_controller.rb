@@ -1,4 +1,24 @@
 class ActivityHistoriesController < ApplicationController
+  def create
+    json_str  = request.body.read     # リクエストのJSON
+    json_hash = JSON.parse(json_str,symbolize_names: true)
+
+    act_history = current_user.activity_historys.build(
+      activity_name:      json_hash[:activity_name],
+      from_time:          json_hash[:from_time],
+      to_time:            json_hash[:to_time],
+      remarks:            json_hash[:remarks]
+    )
+
+    if act_history.save
+      flash[:success] = "登録できました"
+      redirect_to user_path(current_user.id)
+    else
+      flash[:error] = "登録することができませんでした"
+      #render "act_history_input_modal"
+    end
+  end
+
   def show
     act_histories = current_user.activity_historys.select(
       "activity_name AS title,
