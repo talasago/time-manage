@@ -22,64 +22,85 @@
 //= require bootstrap-datetimepicker
 //= require_tree .
 
-//document.addEventListener('DOMContentLoaded', function() {
-//  var calendarEl = document.getElementById('calendar');
-//
-//  var calendar = $("#calendar").fullCalendar(calendarEl, {
-//    defaultView: 'basicWeek',
-//    header: {
-//      left: "today month,basicWeek",
-//      center: "title",
-//      right: "prev next"
-//    },
-//    editable: true, // イベントを編集するか
-//    allDaySlot: false, // 終日表示の枠を表示するか
-//    eventDurationEditable: false, // イベント期間をドラッグしで変更するかどうか
-//    slotEventOverlap: false, // イベントを重ねて表示するか
-//    selectable: true,
-//    selectHelper: true,
-//
-//  });
-//});
-
 $(document).ready(function() {
+  initializePage();
+});
+
+function initializePage() {
   $('#calendar').fullCalendar({
     //入力フォームを表示するためのボタン
     customButtons: {
       historyInsButton: {
-        text: '新規行動履歴登録',
+        text: 'アクティビティ履歴新規登録',
         // モーダルウインドウ表示
         click: function() {
           //モーダルウインドウ初期化する
-           $("#inputTitle").val("");
-           $('#inputHistoryForm').on('show.bs.modal', function (event) {
-               setTimeout(function(){
-                   $('#inputTitle').focus();
-               }, 500);
-           }).modal("show");
+          $("#inputActName").val("");
+          $("#inputYmdFrom").val("");
+          $("#inputHmFrom").val("");
+          $("#inputYmdTo").val("");
+          $("#inputHmTo").val("");
+          $("inputRemarks").val("");
+
+          $('#inputHistoryForm').on('show.bs.modal', function (event) {
+            setTimeout(function(){
+              $('#inputActName').focus();
+            }, 500);
+          }).modal("show");
 
           //日付ピッカー
           $('.ymd').datetimepicker({format : 'YYYY/MM/DD'});
           $('.Hm').datetimepicker({format : 'HH:mm'});
         }
-
-      }
+      },
     },
     // ヘッダーのタイトルとボタン
     header: {
-      // title, pre v, next, prevYear, nextYear, today
       left: "today month,basicWeek historyInsButton",
-      center: "title",
+      center: "title testbutton",
       right: "prev next"
     },
-    defaultView: 'agendaWeek'
+    defaultView: 'agendaWeek',
+    navLinks: true,
+    selectable: true,
+    selectHelper: true,
+
+    events: '/act_histories.json'
   });
-  // 動的にオプションを変更する
-  //$('#calendar').fullCalendar('option', 'height', 700);
+}
 
-  // カレンダーをレンダリング。表示切替時などに使用
-  //$('#calendar').fullCalendar('render');
+/**
+ * 行動履歴入力フォームの登録ボタンクリックイベント
+ */
+function createHistory() {
+  var eventData = {
+    activity_name:  $('#inputActName').val(),
+    from_time:      $('#inputYmdFrom').val() + " " + $('#inputHmFrom').val(),
+    to_time:        $('#inputYmdTo').val() + " " + $('#inputHmTo').val(),
+    remarks:        $('#inputRemarks').val()
+  };
 
-  // カレンダーを破棄（イベントハンドラや内部データも破棄する）
-  //$('#calendar').fullCalendar('destroy')
-});
+
+  //RailsのCSRF対策
+  $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
+    var token;
+    if (!options.crossDomain) {
+      token = $('meta[name="csrf-token"]').attr('content');
+      if (token) {
+        return jqXHR.setRequestHeader('X-CSRF-Token', token);
+      }
+    }
+  });
+
+  $.ajax({
+    url: "/act_histories/new",  //名前付きルートにしたい。
+    type: "post",
+    data: JSON.stringify(eventData)
+  }).done(function(data) {
+    //入力フォームを消す(agendaWeekを再表示する)
+    location.reload();
+  }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
+    alert("error");
+    //エラー部分を赤くして、エラー内容を表示する
+  })
+}

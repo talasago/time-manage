@@ -14,8 +14,7 @@ class ActivityHistoriesController < ApplicationController
       flash[:success] = "登録できました"
       redirect_to user_path(current_user.id)
     else
-      flash[:error] = "登録することができませんでした"
-      #render "act_history_input_modal"
+      flash[:danger] = "登録することができませんでした"
     end
   end
 
