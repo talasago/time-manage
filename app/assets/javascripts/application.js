@@ -98,9 +98,33 @@ function createHistory() {
     data: JSON.stringify(eventData)
   }).done(function(data) {
     //入力フォームを消す(agendaWeekを再表示する)
-    location.reload();
+   location.reload();
   }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
-    alert("error");
-    //エラー部分を赤くして、エラー内容を表示する
+    var res = {}
+    try {
+      res = JSON.parse(XMLHttpRequest.responseText);
+    } catch (e) {
+    }
+
+    var messeges = "";
+    Object.keys(res).forEach(function(key) {
+      var val = this[key];
+      switch (key) {
+        case "activity_name":
+          messeges += "アクティビティ名 : " + val + "\n";
+          break;
+        case "from_time":
+          messeges += "開始日時 : " + val + "\n";
+          break;
+        case "to_time":
+          messeges += "終了日時 : " + val + "\n";
+          break;
+        case "remarks":
+          messeges += "備考 : " + val + "\n";
+          break;
+      }
+      val = "";
+    }, res);
+    alert(messeges)
   })
 }

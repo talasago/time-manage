@@ -10,11 +10,14 @@ class ActivityHistoriesController < ApplicationController
       remarks:            json_hash[:remarks]
     )
 
-    if act_history.save
-      flash[:success] = "登録できました"
-      redirect_to user_path(current_user.id)
-    else
-      flash[:danger] = "登録することができませんでした"
+    respond_to do |format|
+      if act_history.save
+        flash[:success] = "登録できました"
+        format.json { render json: act_history.to_json, status: :created }
+      else
+        flash[:danger] = "登録することができませんでした"
+        format.json {render json: act_history.errors.messages.to_json, status: :unprocessable_entity }
+      end
     end
   end
 

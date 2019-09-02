@@ -27,7 +27,7 @@ RSpec.describe ActivityHistoriesController, type: :controller do
             from_time: @act_history.from_time,
             to_time: @act_history.to_time,
             remarks: @act_history.remarks
-          }.to_json
+          }.to_json, format: :json
         end.to change(ActivityHistory, :count).by(1)
       end
     end
@@ -40,7 +40,7 @@ RSpec.describe ActivityHistoriesController, type: :controller do
             from_time: @act_history.from_time,
             to_time: @act_history.to_time,
             remarks: @act_history.remarks
-          }.to_json
+          }.to_json, format: :json
         end.not_to change(ActivityHistory, :count)
       end
     end
