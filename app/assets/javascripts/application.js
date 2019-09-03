@@ -40,7 +40,7 @@ function initializePage() {
           $("#inputHmFrom").val("");
           $("#inputYmdTo").val("");
           $("#inputHmTo").val("");
-          $("inputRemarks").val("");
+          $("#inputRemarks").val("");
 
           $('#inputHistoryForm').on('show.bs.modal', function (event) {
             setTimeout(function(){
@@ -56,16 +56,59 @@ function initializePage() {
     },
     // ヘッダーのタイトルとボタン
     header: {
-      left: "today month,basicWeek historyInsButton",
-      center: "title testbutton",
+      left: "today month,agendaWeek historyInsButton",
+      center: "title",
       right: "prev next"
     },
     defaultView: 'agendaWeek',
-    navLinks: true,
-    selectable: true,
-    selectHelper: true,
+    events: '/act_histories.json',
 
-    events: '/act_histories.json'
+    //登録済みの行動履歴を確認する。
+    eventClick: function(data) {
+      var eventData = {
+        title:  data.title,
+        start:  moment(data.start).format("YYYY-MM-DD HH:mm"),
+        end:    moment(data.end).format("YYYY-MM-DD HH:mm")
+      };
+
+       //RailsのCSRF対策
+      $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
+        var token;
+        if (!options.crossDomain) {
+          token = $('meta[name="csrf-token"]').attr('content');
+          if (token) {
+            return jqXHR.setRequestHeader('X-CSRF-Token', token);
+          }
+        }
+      });
+
+      $.ajax({
+        url: "/act_history/edit",
+        type: "post",
+        datatype: "json",
+        data: JSON.stringify(eventData)
+      }).done(function(data) {
+        console.log(data[0]);
+        //モーダルウインドウ内の値を設定
+        $("#inputActName").val(data[0].activity_name);
+        $("#inputYmdFrom").val(data[0].from_ymd);
+        $("#inputHmFrom").val(data[0].from_hm);
+        $("#inputYmdTo").val(data[0].to_ymd);
+        $("#inputHmTo").val(data[0].to_hm);
+        $("#inputRemarks").val(data[0].remarks);
+      }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
+      })
+
+      $('#inputHistoryForm').on('show.bs.modal', function (event) {
+        setTimeout(function(){
+          $('#inputActName').focus();
+        }, 500);
+      }).modal("show");
+
+      //日付ピッカー
+      $('.ymd').datetimepicker({format : 'YYYY/MM/DD'});
+      $('.Hm').datetimepicker({format : 'HH:mm'});
+    }
   });
 }
 
@@ -125,6 +168,6 @@ function createHistory() {
       }
       val = "";
     }, res);
-    alert(messeges)
+    alert(messeges);
   })
 }
