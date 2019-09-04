@@ -52,16 +52,7 @@ function initializePage() {
           document.getElementById("updateButton").style.visibility = "hidden";
           document.getElementById("createButton").style.visibility = "visible";
 
-          //入力フォームモーダルウィンドウ表示
-          $('#inputHistoryForm').on('show.bs.modal', function (event) {
-            setTimeout(function(){
-              $('#inputActName').focus();
-            }, 500);
-          }).modal("show");
-
-          //日付ピッカー
-          $('.ymd').datetimepicker({format : 'YYYY/MM/DD'});
-          $('.Hm').datetimepicker({format : 'HH:mm'});
+          modalShow();
         }
       },
     },
@@ -76,6 +67,8 @@ function initializePage() {
 
     //登録済みの行動履歴を確認
     eventClick: function(data) {
+      var url = "/act_history/edit";
+      var type = "post";
       var eventData = {
         title:  data.title,
         start:  moment(data.start).format("YYYY-MM-DD HH:mm"),
@@ -92,43 +85,17 @@ function initializePage() {
       document.getElementById("updateButton").style.visibility ="visible";
       document.getElementById("createButton").style.visibility ="hidden";
 
-       //RailsのCSRF対策
-      $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
-        var token;
-        if (!options.crossDomain) {
-          token = $('meta[name="csrf-token"]').attr('content');
-          if (token) {
-            return jqXHR.setRequestHeader('X-CSRF-Token', token);
-          }
-        }
-      });
-
-      $.ajax({
-        url: "/act_history/edit",
-        type: "post",
-        datatype: "json",
-        data: JSON.stringify(eventData)
-      }).done(function(data) {
-        //モーダルウインドウ内の値を設定
+      //非同期通信対策
+      ajaxConection(eventData, url, type).done(function(data) {
         $("#inputActName").val(data[0].activity_name);
         $("#inputYmdFrom").val(data[0].from_ymd);
         $("#inputHmFrom").val(data[0].from_hm);
         $("#inputYmdTo").val(data[0].to_ymd);
         $("#inputHmTo").val(data[0].to_hm);
         $("#inputRemarks").val(data[0].remarks);
-      }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
       })
 
-      //入力フォームモーダルウィンドウ表示
-      $('#inputHistoryForm').on('show.bs.modal', function (event) {
-        setTimeout(function(){
-          $('#inputActName').focus();
-        }, 500);
-      }).modal("show");
-
-      //日付ピッカー
-      $('.ymd').datetimepicker({format : 'YYYY/MM/DD'});
-      $('.Hm').datetimepicker({format : 'HH:mm'});
+      modalShow();
     }
   });
 }
@@ -137,38 +104,25 @@ function initializePage() {
  * 行動履歴入力フォームの削除ボタンクリックイベント
  */
 function deleteHistory() {
-
+  var url = "/act_history";
+  var type = "delete";
   var eventData = {
     before_act_name:  $('input:hidden[id="beforeActName"]').val(),
     before_from_time: $('input:hidden[id="beforeFromTime"]').val(),
     before_to_time: $('input:hidden[id="beforeToTime"]').val()
   };
-  //RailsのCSRF対策
-  $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
-    var token;
-    if (!options.crossDomain) {
-      token = $('meta[name="csrf-token"]').attr('content');
-      if (token) {
-        return jqXHR.setRequestHeader('X-CSRF-Token', token);
-      }
-    }
-  });
 
-  $.ajax({
-    url: "/act_history",  //名前付きルートにしたい。
-    type: "delete",
-    data: JSON.stringify(eventData)
-  }).done(function(data) {
-    //入力フォームを消す(agendaWeekを再表示する)
+  //非同期通信対策
+  ajaxConection(eventData, url, type).done(function(data) {
     location.reload();
-  }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
   })
 }
 /**
  * 行動履歴入力フォームの更新ボタンクリックイベント
  */
 function updateHistory() {
-
+  var url = "/act_history";
+  var type = "patch";
   var eventData = {
     activity_name:  $('#inputActName').val(),
     from_time:      $('#inputYmdFrom').val() + " " + $('#inputHmFrom').val(),
@@ -179,52 +133,11 @@ function updateHistory() {
     before_to_time: $('input:hidden[id="beforeToTime"]').val()
   };
 
-
-  //RailsのCSRF対策
-  $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
-    var token;
-    if (!options.crossDomain) {
-      token = $('meta[name="csrf-token"]').attr('content');
-      if (token) {
-        return jqXHR.setRequestHeader('X-CSRF-Token', token);
-      }
-    }
-  });
-
-  $.ajax({
-    url: "/act_history",  //名前付きルートにしたい。
-    type: "patch",
-    data: JSON.stringify(eventData)
-  }).done(function(data) {
-    //入力フォームを消す(agendaWeekを再表示する)
+  //非同期通信対策
+  ajaxConection(eventData, url, type).done(function(data) {
     location.reload();
   }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
-    var res = {}
-    try {
-      res = JSON.parse(XMLHttpRequest.responseText);
-    } catch (e) {
-    }
-
-    var messeges = "";
-    Object.keys(res).forEach(function(key) {
-      var val = this[key];
-      switch (key) {
-        case "activity_name":
-          messeges += "アクティビティ名 : " + val + "\n";
-          break;
-        case "from_time":
-          messeges += "開始日時 : " + val + "\n";
-          break;
-        case "to_time":
-          messeges += "終了日時 : " + val + "\n";
-          break;
-        case "remarks":
-          messeges += "備考 : " + val + "\n";
-          break;
-      }
-      val = "";
-    }, res);
-    alert(messeges);
+    errorMsgShow(XMLHttpRequest);
   })
 }
 
@@ -232,6 +145,8 @@ function updateHistory() {
  * 行動履歴入力フォームの登録ボタンクリックイベント
  */
 function createHistory() {
+  var url = "/act_histories/new"
+  var type = "post";
   var eventData = {
     activity_name:  $('#inputActName').val(),
     from_time:      $('#inputYmdFrom').val() + " " + $('#inputHmFrom').val(),
@@ -239,6 +154,33 @@ function createHistory() {
     remarks:        $('#inputRemarks').val()
   };
 
+  //非同期通信対策
+  ajaxConection(eventData, url, type).done(function(data) {
+    location.reload();
+  }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
+    errorMsgShow(XMLHttpRequest);
+  })
+}
+
+/**
+ * 入力フォームモーダルウィンドウ表示
+ */
+function modalShow() {
+  $('#inputHistoryForm').on('show.bs.modal', function (event) {
+    setTimeout(function(){
+      $('#inputActName').focus();
+    }, 500);
+  }).modal("show");
+
+  //日付ピッカー
+  $('.ymd').datetimepicker({format : 'YYYY/MM/DD'});
+  $('.Hm').datetimepicker({format : 'HH:mm'});
+}
+
+/**
+ * ajax通信
+ */
+function ajaxConection(eventData, url, type) {
 
   //RailsのCSRF対策
   $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
@@ -251,39 +193,41 @@ function createHistory() {
     }
   });
 
-  $.ajax({
-    url: "/act_histories/new",  //名前付きルートにしたい。
-    type: "post",
+  return $.ajax({
+    url: url,
+    type: type,
     data: JSON.stringify(eventData)
-  }).done(function(data) {
-    //入力フォームを消す(agendaWeekを再表示する)
-   location.reload();
-  }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
-    var res = {}
-    try {
-      res = JSON.parse(XMLHttpRequest.responseText);
-    } catch (e) {
-    }
-
-    var messeges = "";
-    Object.keys(res).forEach(function(key) {
-      var val = this[key];
-      switch (key) {
-        case "activity_name":
-          messeges += "アクティビティ名 : " + val + "\n";
-          break;
-        case "from_time":
-          messeges += "開始日時 : " + val + "\n";
-          break;
-        case "to_time":
-          messeges += "終了日時 : " + val + "\n";
-          break;
-        case "remarks":
-          messeges += "備考 : " + val + "\n";
-          break;
-      }
-      val = "";
-    }, res);
-    alert(messeges);
   })
+}
+
+/**
+ * 登録・更新時のエラーメッセージ表示
+ */
+function errorMsgShow(req) {
+  var res = {}
+  try {
+    res = JSON.parse(req.responseText);
+  } catch (e) {
+  }
+
+  var messeges = "";
+  Object.keys(res).forEach(function(key) {
+    var val = this[key];
+    switch (key) {
+      case "activity_name":
+        messeges += "アクティビティ名 : " + val + "\n";
+        break;
+      case "from_time":
+        messeges += "開始日時 : " + val + "\n";
+        break;
+      case "to_time":
+        messeges += "終了日時 : " + val + "\n";
+        break;
+      case "remarks":
+        messeges += "備考 : " + val + "\n";
+        break;
+    }
+    val = "";
+  }, res);
+  alert(messeges);
 }
