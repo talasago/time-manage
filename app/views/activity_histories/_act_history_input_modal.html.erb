@@ -1,50 +1,54 @@
 <div id="inputHistoryForm" class="modal fade" tabindex="-1">
- <div class="modal-dialog">
+  <%= hidden_field_tag :beforeActName %>
+  <%= hidden_field_tag :beforeFromTime %>
+  <%= hidden_field_tag :beforeToTime %>
+  <div class="modal-dialog">
     <div class="modal-content">
-       <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-          <h4 class="modal-title">アクティビティ履歴登録</h4>
-       </div>
-       <div class="modal-body">
-          <div class="container">
-             <div class="row">
-                <div  class="col-md-2">
-                   <label for="">アクティビティ名</label>
-                </div>
-                <div class="col-md-5">
-                   <input id="inputActName" type="text" class="form-control input-sm ime-active" placeholder="アクティビティ名" value="" >
-                </div>
-             </div>
-             <div class="row">
-                <div  class="col-md-2 required">
-                   <label for="">日時</label>
-                </div>
-                <div class="col-md-5">
-                   <div class="form-inline">
-                      <div class="form-group" style="position:relative;">
-                         <input id="inputYmdFrom" type="text" class="form-control input-sm ymd" placeholder="yyyy/mm/dd" value=""/>
-                         <input id="inputHmFrom" type="text" class="form-control input-sm Hm" placeholder="hh:mm" value=""/>
-                         ～
-                         <input id="inputYmdTo" type="text" class="form-control input-sm ymd" placeholder="yyyy/mm/dd" value=""/>
-                         <input id="inputHmTo" type="text" class="form-control input-sm Hm" placeholder="hh:mm" value=""/>
-                      </div>
-                   </div>
-                  </div>
-             </div>
-             <div class="row">
-                <div  class="col-md-2">
-                   <label for="">備考</label>
-                </div>
-                <div class="col-md-5">
-                   <textarea id="inputRemarks" class="form-control input-sm ime-active" rows="2" placeholder="備考" value=""></textarea>
-                </div>
-             </div>
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">アクティビティ履歴</h4>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="row">
+            <div  class="col-md-2">
+              <label for="">アクティビティ名</label>
+            </div>
+            <div class="col-md-5">
+              <input id="inputActName" type="text" class="form-control input-sm ime-active" placeholder="アクティビティ名" value="" >
+            </div>
           </div>
-       </div>
-       <div class="modal-footer">
-          <button type="button" class="btn btn-primary" onclick="createHistory();">登録</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-       </div>
+          <div class="row">
+            <div  class="col-md-2 required">
+              <label for="">日時</label>
+            </div>
+            <div class="col-md-5">
+              <div class="form-inline">
+                <div class="form-group" style="position:relative;">
+                  <input id="inputYmdFrom" type="text" class="form-control input-sm ymd" placeholder="yyyy/mm/dd" value=""/>
+                  <input id="inputHmFrom" type="text" class="form-control input-sm Hm" placeholder="hh:mm" value=""/>
+                   ～
+                  <input id="inputYmdTo" type="text" class="form-control input-sm ymd" placeholder="yyyy/mm/dd" value=""/>
+                  <input id="inputHmTo" type="text" class="form-control input-sm Hm" placeholder="hh:mm" value=""/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div  class="col-md-2">
+              <label for="">備考</label>
+            </div>
+            <div class="col-md-5">
+              <textarea id="inputRemarks" class="form-control input-sm ime-active" rows="2" placeholder="備考" value=""></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="deleteButton" type="button" class="btn btn-primary" onclick="deleteHistory();">削除</button>
+        <button id="updateButton"type="button" class="btn btn-primary" onclick="updateHistory();">更新</button>
+        <button id="createButton"type="button" class="btn btn-primary" onclick="createHistory();">登録</button>
+      </div>
     </div>
  </div>
 </div>

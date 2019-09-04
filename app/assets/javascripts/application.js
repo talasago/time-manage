@@ -42,6 +42,17 @@ function initializePage() {
           $("#inputHmTo").val("");
           $("#inputRemarks").val("");
 
+          //更新前の値を隠し項目を初期化
+          $('input:hidden[id="beforeActName"]').val("");
+          $('input:hidden[id="beforeFromTime"]').val("");
+          $('input:hidden[id="beforeToTime"]').val("");
+
+          //更新・削除ボタンを非表示に
+          document.getElementById("deleteButton").style.visibility = "hidden";
+          document.getElementById("updateButton").style.visibility = "hidden";
+          document.getElementById("createButton").style.visibility = "visible";
+
+          //入力フォームモーダルウィンドウ表示
           $('#inputHistoryForm').on('show.bs.modal', function (event) {
             setTimeout(function(){
               $('#inputActName').focus();
@@ -63,13 +74,23 @@ function initializePage() {
     defaultView: 'agendaWeek',
     events: '/act_histories.json',
 
-    //登録済みの行動履歴を確認する。
+    //登録済みの行動履歴を確認
     eventClick: function(data) {
       var eventData = {
         title:  data.title,
         start:  moment(data.start).format("YYYY-MM-DD HH:mm"),
         end:    moment(data.end).format("YYYY-MM-DD HH:mm")
       };
+
+      //更新前の値を隠し項目に設定
+      $('input:hidden[id="beforeActName"]').val(eventData.title);
+      $('input:hidden[id="beforeFromTime"]').val(eventData.start);
+      $('input:hidden[id="beforeToTime"]').val(eventData.end);
+
+      //登録ボタンを非表示に
+      document.getElementById("deleteButton").style.visibility ="visible";
+      document.getElementById("updateButton").style.visibility ="visible";
+      document.getElementById("createButton").style.visibility ="hidden";
 
        //RailsのCSRF対策
       $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
@@ -88,7 +109,6 @@ function initializePage() {
         datatype: "json",
         data: JSON.stringify(eventData)
       }).done(function(data) {
-        console.log(data[0]);
         //モーダルウインドウ内の値を設定
         $("#inputActName").val(data[0].activity_name);
         $("#inputYmdFrom").val(data[0].from_ymd);
@@ -99,6 +119,7 @@ function initializePage() {
       }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
       })
 
+      //入力フォームモーダルウィンドウ表示
       $('#inputHistoryForm').on('show.bs.modal', function (event) {
         setTimeout(function(){
           $('#inputActName').focus();
@@ -110,6 +131,70 @@ function initializePage() {
       $('.Hm').datetimepicker({format : 'HH:mm'});
     }
   });
+}
+
+/**
+ * 行動履歴入力フォームの更新ボタンクリックイベント
+ */
+function updateHistory() {
+
+  var eventData = {
+    activity_name:  $('#inputActName').val(),
+    from_time:      $('#inputYmdFrom').val() + " " + $('#inputHmFrom').val(),
+    to_time:        $('#inputYmdTo').val() + " " + $('#inputHmTo').val(),
+    remarks:        $('#inputRemarks').val(),
+    before_act_name:  $('input:hidden[id="beforeActName"]').val(),
+    before_from_time: $('input:hidden[id="beforeFromTime"]').val(),
+    before_to_time: $('input:hidden[id="beforeToTime"]').val()
+  };
+
+
+  //RailsのCSRF対策
+  $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
+    var token;
+    if (!options.crossDomain) {
+      token = $('meta[name="csrf-token"]').attr('content');
+      if (token) {
+        return jqXHR.setRequestHeader('X-CSRF-Token', token);
+      }
+    }
+  });
+
+  $.ajax({
+    url: "/act_history",  //名前付きルートにしたい。
+    type: "patch",
+    data: JSON.stringify(eventData)
+  }).done(function(data) {
+    //入力フォームを消す(agendaWeekを再表示する)
+    location.reload();
+  }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
+    var res = {}
+    try {
+      res = JSON.parse(XMLHttpRequest.responseText);
+    } catch (e) {
+    }
+
+    var messeges = "";
+    Object.keys(res).forEach(function(key) {
+      var val = this[key];
+      switch (key) {
+        case "activity_name":
+          messeges += "アクティビティ名 : " + val + "\n";
+          break;
+        case "from_time":
+          messeges += "開始日時 : " + val + "\n";
+          break;
+        case "to_time":
+          messeges += "終了日時 : " + val + "\n";
+          break;
+        case "remarks":
+          messeges += "備考 : " + val + "\n";
+          break;
+      }
+      val = "";
+    }, res);
+    alert(messeges);
+  })
 }
 
 /**
