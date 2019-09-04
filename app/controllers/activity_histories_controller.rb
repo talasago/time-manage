@@ -1,25 +1,25 @@
 class ActivityHistoriesController < ApplicationController
-  def create
-    json_str = request.body.read # リクエストのJSON
-    json_hash = JSON.parse(json_str, symbolize_names: true)
+  before_action :json_body_read,  only: %i[create edit update destroy]
 
+  def initialize
+    @json_hash = ""
+    @json_str = ""
+  end
+
+  def create
     act_history = current_user.activity_historys.build(
-      activity_name:      json_hash[:activity_name],
-      from_time:          json_hash[:from_time],
-      to_time:            json_hash[:to_time],
-      remarks:            json_hash[:remarks]
+      activity_name:      @json_hash[:activity_name],
+      from_time:          @json_hash[:from_time],
+      to_time:            @json_hash[:to_time],
+      remarks:            @json_hash[:remarks]
     )
 
     respond_to do |format|
       if act_history.save
-        flash[:success] = "登録できました"
-        format.json {
-          render json: act_history.to_json, status: :created
-        } # 無意味なrender。js側でリロードしているため
+        flash[:success] = "登録しました"
+        format.json { render json: act_history.to_json, status: :created } # 無意味なrender。js側でリロードしているため
       else
-        format.json {
-          render json: act_history.errors.messages.to_json, status: :unprocessable_entity
-        }
+        format.json { render json: act_history.errors.messages.to_json, status: :unprocessable_entity }
       end
     end
   end
@@ -32,16 +32,11 @@ class ActivityHistoriesController < ApplicationController
     ).as_json(only: %i[title start end])
 
     respond_to do |format|
-      format.json {
-        render json: act_histories.to_json
-      }
+      format.json { render json: act_histories.to_json }
     end
   end
 
   def edit
-    json_str  = request.body.read # リクエストのJSON
-    json_hash = JSON.parse(json_str,symbolize_names: true)
-
     act_history = current_user.activity_historys.select(
       "activity_name,
        to_char(from_time, 'YYYY-MM-DD') AS from_ymd,
@@ -51,9 +46,9 @@ class ActivityHistoriesController < ApplicationController
        remarks"
     ).where(
       "activity_name = ? and from_time = ? and to_time = ?",
-      json_hash[:title],
-      DateTime.parse(json_hash[:start]),
-      DateTime.parse(json_hash[:end])
+      @json_hash[:title],
+      DateTime.parse(@json_hash[:start]),
+      DateTime.parse(@json_hash[:end])
     ).as_json(only: %i[activity_name from_ymd from_hm toYMD to_ymd to_hm remarks])
 
     respond_to do |format|
@@ -64,22 +59,19 @@ class ActivityHistoriesController < ApplicationController
   end
 
   def update
-    json_str  = request.body.read # リクエストのJSON
-    json_hash = JSON.parse(json_str, symbolize_names: true)
-
     act_history = current_user.activity_historys.find_by(
       "activity_name = ? and from_time = ? and to_time = ?",
-      json_hash[:before_act_name],
-      DateTime.parse(json_hash[:before_from_time]),
-      DateTime.parse(json_hash[:before_to_time])
+      @json_hash[:before_act_name],
+      DateTime.parse(@json_hash[:before_from_time]),
+      DateTime.parse(@json_hash[:before_to_time])
     )
 
     respond_to do |format|
       if act_history.update(
-          activity_name:      json_hash[:activity_name],
-          from_time:          json_hash[:from_time],
-          to_time:            json_hash[:to_time],
-          remarks:            json_hash[:remarks]
+          activity_name:      @json_hash[:activity_name],
+          from_time:          @json_hash[:from_time],
+          to_time:            @json_hash[:to_time],
+          remarks:            @json_hash[:remarks]
         )
         flash[:success] = "更新しました"
         format.json {
@@ -94,18 +86,22 @@ class ActivityHistoriesController < ApplicationController
   end
 
   def destroy
-    json_str  = request.body.read # リクエストのJSON
-    json_hash = JSON.parse(json_str, symbolize_names: true)
-
     act_history = current_user.activity_historys.find_by(
       "activity_name = ? and from_time = ? and to_time = ?",
-      json_hash[:before_act_name],
-      DateTime.parse(json_hash[:before_from_time]),
-      DateTime.parse(json_hash[:before_to_time])
+      @json_hash[:before_act_name],
+      DateTime.parse(@json_hash[:before_from_time]),
+      DateTime.parse(@json_hash[:before_to_time])
     )
 
     act_history.destroy
     flash[:success] = "削除しました"
     # js側でリロードしているため、何も返却しない。ステータスは204
+  end
+
+  private
+
+  def json_body_read
+    @json_str  = request.body.read # リクエストのJSON
+    @json_hash = JSON.parse(@json_str, symbolize_names: true)
   end
 end
