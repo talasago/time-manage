@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   post   '/act_histories/new',    to:  'activity_histories#create'
   get    '/act_histories',        to:  'activity_histories#show'
   patch  '/act_history',          to:  'activity_histories#update'
+  delete '/act_history',          to:  'activity_histories#destroy'
   post   '/act_history/edit',     to:  'activity_histories#edit'
   resources :users
 end

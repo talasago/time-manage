@@ -134,6 +134,37 @@ function initializePage() {
 }
 
 /**
+ * 行動履歴入力フォームの削除ボタンクリックイベント
+ */
+function deleteHistory() {
+
+  var eventData = {
+    before_act_name:  $('input:hidden[id="beforeActName"]').val(),
+    before_from_time: $('input:hidden[id="beforeFromTime"]').val(),
+    before_to_time: $('input:hidden[id="beforeToTime"]').val()
+  };
+  //RailsのCSRF対策
+  $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
+    var token;
+    if (!options.crossDomain) {
+      token = $('meta[name="csrf-token"]').attr('content');
+      if (token) {
+        return jqXHR.setRequestHeader('X-CSRF-Token', token);
+      }
+    }
+  });
+
+  $.ajax({
+    url: "/act_history",  //名前付きルートにしたい。
+    type: "delete",
+    data: JSON.stringify(eventData)
+  }).done(function(data) {
+    //入力フォームを消す(agendaWeekを再表示する)
+    location.reload();
+  }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
+  })
+}
+/**
  * 行動履歴入力フォームの更新ボタンクリックイベント
  */
 function updateHistory() {

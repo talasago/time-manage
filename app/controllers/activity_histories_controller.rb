@@ -81,15 +81,31 @@ class ActivityHistoriesController < ApplicationController
           to_time:            json_hash[:to_time],
           remarks:            json_hash[:remarks]
         )
-        flash[:success] = "更新できました"
+        flash[:success] = "更新しました"
         format.json {
           render json: act_history.to_json, status: :created
-        } #無意味なrender。js側でリロードしているため
+        } # 無意味なrender。js側でリロードしているため
       else
         format.json {
           render json: act_history.errors.messages.to_json, status: :unprocessable_entity
         }
       end
     end
+  end
+
+  def destroy
+    json_str  = request.body.read # リクエストのJSON
+    json_hash = JSON.parse(json_str, symbolize_names: true)
+
+    act_history = current_user.activity_historys.find_by(
+      "activity_name = ? and from_time = ? and to_time = ?",
+      json_hash[:before_act_name],
+      DateTime.parse(json_hash[:before_from_time]),
+      DateTime.parse(json_hash[:before_to_time])
+    )
+
+    act_history.destroy
+    flash[:success] = "削除しました"
+    # js側でリロードしているため、何も返却しない。ステータスは204
   end
 end
