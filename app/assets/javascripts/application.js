@@ -65,6 +65,11 @@ function initializePage() {
     defaultView: 'agendaWeek',
     events: '/act_histories.json',
 
+    //agendaWeekのオプション
+    slotEventOverlap: false,
+    allDaySlot: false,
+    agendaEventMinHeight: 10,
+
     //登録済みの行動履歴を確認
     eventClick: function(data) {
       var url = "/act_history/edit";
