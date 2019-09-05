@@ -22,11 +22,7 @@
 //= require bootstrap-datetimepicker
 //= require_tree .
 
-$(document).ready(function() {
-  initializePage();
-});
-
-function initializePage() {
+document.addEventListener("turbolinks:load", function() {
   $('#calendar').fullCalendar({
     //入力フォームを表示するためのボタン
     customButtons: {
@@ -103,7 +99,7 @@ function initializePage() {
       modalShow();
     }
   });
-}
+});
 
 /**
  * 行動履歴入力フォームの削除ボタンクリックイベント
