@@ -24,12 +24,34 @@
 
 document.addEventListener("turbolinks:load", function() {
   $('#calendar').fullCalendar({
+    // ヘッダーのタイトルとボタン
+    header: {
+      left: "today month,agendaWeek historyInsButton",
+      center: "title",
+      right: "prev next"
+    },
+    defaultView: 'agendaWeek',
+    events: '/act_histories.json',
+
+    //カレンダーの高さ
+    height: window.innerHeight - 200,
+    windowResize: function () {
+      $('#calendar').fullCalendar('option', 'height', window.innerHeight - 200);
+    },
+
+    //agendaWeekのオプション
+    slotEventOverlap: false,
+    allDaySlot: false,
+    agendaEventMinHeight: 10,
+
     //入力フォームを表示するためのボタン
     customButtons: {
       historyInsButton: {
         text: 'アクティビティ履歴新規登録',
         // モーダルウインドウ表示
         click: function() {
+          alert(window.innerHeight);
+
           //モーダルウインドウ初期化する
           $("#inputActName").val("");
           $("#inputYmdFrom").val("");
@@ -44,28 +66,14 @@ document.addEventListener("turbolinks:load", function() {
           $('input:hidden[id="beforeToTime"]').val("");
 
           //更新・削除ボタンを非表示に
-          document.getElementById("deleteButton").style.visibility = "hidden";
-          document.getElementById("updateButton").style.visibility = "hidden";
-          document.getElementById("createButton").style.visibility = "visible";
+          $('#deleteButton').hide();
+          $('#updateButton').hide();
+          $('#createButton').show();
 
           modalShow();
         }
       },
     },
-    // ヘッダーのタイトルとボタン
-    header: {
-      left: "today month,agendaWeek historyInsButton",
-      center: "title",
-      right: "prev next"
-    },
-    defaultView: 'agendaWeek',
-    events: '/act_histories.json',
-
-    //agendaWeekのオプション
-    slotEventOverlap: false,
-    allDaySlot: false,
-    agendaEventMinHeight: 10,
-
     //登録済みの行動履歴を確認
     eventClick: function(data) {
       var url = "/act_history/edit";
@@ -82,9 +90,9 @@ document.addEventListener("turbolinks:load", function() {
       $('input:hidden[id="beforeToTime"]').val(eventData.end);
 
       //登録ボタンを非表示に
-      document.getElementById("deleteButton").style.visibility ="visible";
-      document.getElementById("updateButton").style.visibility ="visible";
-      document.getElementById("createButton").style.visibility ="hidden";
+      $('#deleteButton').show();
+      $('#updateButton').show();
+      $('#createButton').hide();
 
       //非同期通信対策
       ajaxConection(eventData, url, type).done(function(data) {

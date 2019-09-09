@@ -152,3 +152,45 @@ input {
     color: $state-danger-text;
   }
 }
+
+/* calendar */
+.fc-sun {
+  color: red;
+  background-color: #fff0f0;
+}
+
+.fc-sat {
+  color: blue;
+  background-color: #f0f0ff;
+}
+
+
+/* modalforms */
+.container {
+  .col-md-5 {
+    p {
+      margin: 0px 0px;
+    }
+    .input-sm.ymd {
+      width: auto;
+    }
+    .input-sm.hm {
+      width: auto;
+    }
+    .input-sm {
+      width: 70%;
+    }
+  }
+}
+
+.modal-footer {
+  #deleteButton {
+    float: left;
+  }
+  #createButton {
+    float: right;
+  }
+  #updateButton {
+    float: right;
+  }
+}

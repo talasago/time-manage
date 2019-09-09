@@ -25,11 +25,15 @@
             <div class="col-md-5">
               <div class="form-inline">
                 <div class="form-group" style="position:relative;">
-                  <input id="inputYmdFrom" type="text" class="form-control input-sm ymd" placeholder="yyyy/mm/dd" value=""/>
-                  <input id="inputHmFrom" type="text" class="form-control input-sm Hm" placeholder="hh:mm" value=""/>
-                   ～
-                  <input id="inputYmdTo" type="text" class="form-control input-sm ymd" placeholder="yyyy/mm/dd" value=""/>
-                  <input id="inputHmTo" type="text" class="form-control input-sm Hm" placeholder="hh:mm" value=""/>
+                  <p>
+                    <input id="inputYmdFrom" type="text" class="form-control input-sm ymd" placeholder="yyyy/mm/dd" value=""/>
+                    <input id="inputHmFrom" type="text" class="form-control input-sm hm" placeholder="hh:mm" value=""/>
+                    〜
+                  </p>
+                  <p>
+                    <input id="inputYmdTo" type="text" class="form-control input-sm ymd" placeholder="yyyy/mm/dd" value=""/>
+                    <input id="inputHmTo" type="text" class="form-control input-sm hm" placeholder="hh:mm" value=""/>
+                  </p>
                 </div>
               </div>
             </div>
@@ -45,9 +49,9 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button id="deleteButton" type="button" class="btn btn-primary" onclick="deleteHistory();">削除</button>
-        <button id="updateButton"type="button" class="btn btn-primary" onclick="updateHistory();">更新</button>
-        <button id="createButton"type="button" class="btn btn-primary" onclick="createHistory();">登録</button>
+        <button id="deleteButton" type="button" class="btn btn-danger" onclick="deleteHistory();">削除</button>
+        <button id="updateButton" type="button" class="btn btn-primary" onclick="updateHistory();">更新</button>
+        <button id="createButton" type="button" class="btn btn-primary" onclick="createHistory();">登録</button>
       </div>
     </div>
  </div>
