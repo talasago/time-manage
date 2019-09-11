@@ -13,7 +13,7 @@ $gray-medium-light: #eaeaea;
 
 /* universal */
 body {
-  padding-top: 60px;
+  padding-top: 30px;
 }
 
 section {
@@ -29,6 +29,13 @@ textarea {
   h1 {
     margin-bottom: 10px;
   }
+}
+
+/* jumbotron */
+.jumbotron-extend {
+  margin: auto;
+  padding-top: 0px;
+  background: image-url("time_manage_M.jpg") center no-repeat; background-size: cover;
 }
 
 /* typography */
