@@ -1,6 +1,6 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
-@import 'bootstrap-datetimepicker';
+@import "bootstrap-datetimepicker";
 
 /*  variables */
 $gray-medium-light: #eaeaea;
@@ -61,18 +61,35 @@ p {
 /* header */
 #logo {
   float: left;
+  margin-top: 10px;
   margin-right: 10px;
-  font-size: 1.7em;
+  font-size: 1.5em;
   color: white;
-  text-transform: uppercase;
   letter-spacing: -1px;
-  padding-top: 9px;
-  font-weight: bold;
+  font-weight: 500;
   &:hover {
     color: white;
     text-decoration: none;
   }
 }
+#headernav {
+  .navbar-fixed-top {
+    background: linear-gradient(#1089ec, #74b8f0);
+    color: #ffffff;
+    position: fixed;
+    top: 0;
+    right:0;
+    left: 0;
+    z-index: 1030;
+    margin-bottom: 0;
+
+    //BootStrapデフォルト色より優先度をあげる
+    .navbar-right li a{
+      color: #ffffff;
+    }
+  }
+}
+
 
 /* footer */
 footer {

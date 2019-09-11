@@ -1,11 +1,15 @@
 module ApplicationHelper
   # ページごとの完全なタイトルを返します。
   def full_title(page_title = '')
-    base_title = "時間管理app"
     if page_title.empty?
-      base_title
+      app_name
     else
-      page_title + " - " + base_title
+      page_title + " - " + app_name
     end
+  end
+
+  #アプリ名を返します
+  def app_name
+    "TimeRecordShare"
   end
 end
