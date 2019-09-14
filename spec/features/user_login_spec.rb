@@ -16,7 +16,7 @@ RSpec.feature "UserLogin", type: :feature do
 
     it "'ユーザー新規登録' click to displayed 'ユーザー新規登録画面'" do
       expect do
-        click_on "ユーザー新規登録"
+        click_link "ユーザー新規登録"
       end.not_to change(User, :count)
 
       expect(page).to have_http_status(:ok)
@@ -27,7 +27,6 @@ RSpec.feature "UserLogin", type: :feature do
 
   describe "login success" do
     it "user login and displayed 'ユーザーホーム画面' and logout" do
-
       #factory読み込み
       fill_in "session_name",	with: @user.name
       fill_in "session_password",	with: @user.password
@@ -44,13 +43,12 @@ RSpec.feature "UserLogin", type: :feature do
       expect(page).to have_css("a[href=\"#{logout_path}\"]")
       expect(page).to have_css("a[href=\"#{user_path(@user)}\"]")
 
-      click_on "ユーザー情報"
+      click_on @user.name
       click_on "ログアウト"
 
       expect(page).to have_css("a[href=\"#{login_path}\"]")
       expect(page).not_to have_css("a[href=\"#{logout_path}\"]")
       expect(page).not_to have_css("a[href=\"#{user_path(@user)}\"]")
-
     end
   end
 
