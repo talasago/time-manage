@@ -1,23 +1,47 @@
 <div class="center jumbotron jumbotron-extend">
   <h1><%= app_name %></h1>
-  <h2>
-    〜時間を大切にしたいアナタに〜
-  </h2>
+  <h2>〜時間を大切にしたいアナタに〜</h2>
 </div>
-<h2>
-    どのくらいの時間にどんな行動をしたかを記録するアプリです。記録した内容は公開されます。
-  </h2>
-  <h3>
-    <p>使って欲しい人</p>
-    <p>・日々ダラダラと過ごしている</p>
-    <p>・一年があっという間に立っている</p>
-    <p>・日々をもっと大切に生きていきたい</p>
-    <p>・他の人がどの様に行動しているかが気になる</p>
 
-    <p>主な使い方</p>
-    <p>1. 自分の行動を記録して振り返る。</p>
-    <p>2. 他の人の行動を参考にする。</p>
-
+<section class="page-section" id="about">
+  <div class="container">
+    <h2 class="text-center mt-0"><%= app_name %>とは</h2>
+    <div class="center">
+      <i>いつどのくらいの時間にどんな行動をしたかを記録するアプリです。記録した内容は公開されます。</i>
+    </div>
+    <hr class="divider my-4">
+    <div class="row">
+      <div class="col-lg-4 col-md-5 text-center">
+        <div class="mt-5">
+          <i class="fas fa-4x fa-star text-primary mb-4"></i>
+          <h3 class="h4 mb-2">ミッション</h3>
+          <p class="text-muted mb-0">自分が何をしているか行動を振り返ることで改善できる手助けとなること</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-5 text-center">
+        <div class="mt-5">
+          <i class="fas fa-4x fa-user text-primary mb-4"></i>
+          <h3 class="h4 mb-2">使って欲しい人</h3>
+          <p class="text-muted mb-0">・日々ダラダラと過ごしている</p>
+          <p class="text-muted mb-0">・一年があっという間に立っている</p>
+          <p class="text-muted mb-0">・日々をもっと大切に生きていきたい</p>
+          <p class="text-muted mb-0">・他の人がどの様に行動しているかが気になる</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-5 text-center">
+        <div class="mt-5">
+          <i class="fas fa-4x fa-check text-primary mb-4"></i>
+          <h3 class="h4 mb-2">主な使い方</h3>
+          <p class="text-muted mb-0">1. 自分の行動を記録して振り返る。</p>
+          <p class="text-muted mb-0">2. 他の人の行動を参考にする。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="page-section" id="entry-guide">
+  <div class="container text-center">
     <p>時間は有限です！行動を振り返り自分が何をしているか確認して改善しより良い人生を歩みましょう！</p>
-  </h3>
-  <%= link_to "ユーザー新規登録", new_user_path, class: "btn btn-lg btn-primary" %>
+    <%= link_to "ユーザー新規登録", new_user_path, class: "btn btn-lg btn-primary" %>
+  </div>
+</section>
