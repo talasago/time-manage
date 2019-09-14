@@ -181,7 +181,7 @@ function modalShow() {
 
   //日付ピッカー
   $('.ymd').datetimepicker({format : 'YYYY/MM/DD'});
-  $('.Hm').datetimepicker({format : 'HH:mm'});
+  $('.hm').datetimepicker({format : 'HH:mm'});
 }
 
 /**
