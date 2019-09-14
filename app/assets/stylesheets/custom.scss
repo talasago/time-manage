@@ -1,6 +1,6 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
-@import 'bootstrap-datetimepicker';
+@import "bootstrap-datetimepicker";
 
 /*  variables */
 $gray-medium-light: #eaeaea;
@@ -13,7 +13,7 @@ $gray-medium-light: #eaeaea;
 
 /* universal */
 body {
-  padding-top: 60px;
+  padding-top: 30px;
 }
 
 section {
@@ -31,6 +31,57 @@ textarea {
   }
 }
 
+.wrapper {
+  margin-top: 65px;
+}
+
+/* jumbotron */
+.jumbotron-extend {
+  margin: auto;
+  padding: 90px 0px 190px 0px;
+  background: image-url("time_manage_M.jpg") center no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+
+  h1 {
+    font-size: 3.5em;
+    color: #c5e5ff;
+    padding: 150px 0px 200px 0px;
+    -webkit-text-stroke: 1px #1089ec;
+    -moz-text-stroke: 1px #1089ec;
+    -o-text-stroke: 1px #1089ec;
+    letter-spacing: -2px;
+    text-align: center;
+  }
+  h2 {
+    font-size: 4em;
+    color: #FFFFCC;
+    vertical-align: 120px;
+    text-align: center;
+    font-weight: normal;
+    letter-spacing: -1px;
+
+  }
+}
+
+#about {
+  background-color: rgb(248, 247, 247);
+  padding-top: 40px;
+  padding-bottom: 50px;
+  .divider{
+    margin: 40px 0px 55px 0px;
+  }
+}
+
+#entry-guide {
+  padding-top: 20px;
+  p {
+    font-size: 1.5em;
+  }
+}
+
 /* typography */
 h1, h2, h3, h4, h5, h6 {
   line-height: 1;
@@ -43,15 +94,6 @@ h1 {
   text-align: center;
 }
 
-h2 {
-  font-size: 1.2em;
-  letter-spacing: -1px;
-  margin-bottom: 30px;
-  text-align: center;
-  font-weight: normal;
-  color: $gray-light;
-}
-
 p {
   font-size: 1.1em;
   line-height: 1.7em;
@@ -61,18 +103,45 @@ p {
 /* header */
 #logo {
   float: left;
+  margin-top: 10px;
   margin-right: 10px;
-  font-size: 1.7em;
+  font-size: 1.5em;
   color: white;
-  text-transform: uppercase;
   letter-spacing: -1px;
-  padding-top: 9px;
-  font-weight: bold;
+  font-weight: 500;
   &:hover {
     color: white;
     text-decoration: none;
   }
 }
+#headernav {
+  .navbar-fixed-top {
+    background: linear-gradient(#1089ec, #74b8f0);
+    color: #ffffff;
+    position: fixed;
+    top: 0;
+    right:0;
+    left: 0;
+    z-index: 1030;
+    margin-bottom: 0;
+
+    //BootStrapデフォルト色より優先度をあげる
+    .navbar-right li a {
+      color: #ffffff;
+    }
+
+    //BootStrapデフォルト色より優先度をあげる
+    ul .dropdown-menu {
+      background: linear-gradient(#1089ec, #74b8f0);
+      li {
+        a:hover {
+          background: linear-gradient(#1089ec, #74b8f0);
+        }
+      }
+    }
+  }
+}
+
 
 /* footer */
 footer {
@@ -102,7 +171,8 @@ footer {
 /* sidebar */
 aside {
   section.user_info {
-    margin-top: 20px;
+    margin-top: 50px;
+    margin-bottom: 10px;
   }
   section {
     padding: 10px 0;

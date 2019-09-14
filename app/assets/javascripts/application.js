@@ -50,8 +50,6 @@ document.addEventListener("turbolinks:load", function() {
         text: 'アクティビティ履歴新規登録',
         // モーダルウインドウ表示
         click: function() {
-          alert(window.innerHeight);
-
           //モーダルウインドウ初期化する
           $("#inputActName").val("");
           $("#inputYmdFrom").val("");
