@@ -126,8 +126,18 @@ p {
     margin-bottom: 0;
 
     //BootStrapデフォルト色より優先度をあげる
-    .navbar-right li a{
+    .navbar-right li a {
       color: #ffffff;
+    }
+
+    //BootStrapデフォルト色より優先度をあげる
+    ul .dropdown-menu {
+      background: linear-gradient(#1089ec, #74b8f0);
+      li {
+        a:hover {
+          background: linear-gradient(#1089ec, #74b8f0);
+        }
+      }
     }
   }
 }
