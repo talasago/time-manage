@@ -34,8 +34,32 @@ textarea {
 /* jumbotron */
 .jumbotron-extend {
   margin: auto;
-  padding-top: 0px;
-  background: image-url("time_manage_M.jpg") center no-repeat; background-size: cover;
+  padding: 90px 0px 190px 0px;
+  background: image-url("time_manage_M.jpg") center no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+
+  h1 {
+    font-size: 3.5em;
+    color: #c5e5ff;
+    padding: 150px 0px 200px 0px;
+    -webkit-text-stroke: 1px #1089ec;
+    -moz-text-stroke: 1px #1089ec;
+    -o-text-stroke: 1px #1089ec;
+    letter-spacing: -2px;
+    text-align: center;
+  }
+  h2 {
+    font-size: 4em;
+    color: #FFFFCC;
+    vertical-align: 120px;
+    text-align: center;
+    font-weight: normal;
+    letter-spacing: -1px;
+
+  }
 }
 
 /* typography */
@@ -43,21 +67,9 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1;
 }
 
-h1 {
-  font-size: 3em;
-  letter-spacing: -2px;
-  margin-bottom: 30px;
-  text-align: center;
-}
 
-h2 {
-  font-size: 1.2em;
-  letter-spacing: -1px;
-  margin-bottom: 30px;
-  text-align: center;
-  font-weight: normal;
-  color: $gray-light;
-}
+
+
 
 p {
   font-size: 1.1em;
