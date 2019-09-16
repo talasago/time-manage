@@ -139,4 +139,12 @@ RSpec.describe User, type: :model do
       end.to change(ActivityHistory, :count).by(-1).and change(User, :count).by(-1)
     end
   end
+
+  describe "authenticated?()" do
+    context "when param nil" do
+      it "return false" do
+        expect(@user.authenticate("")).to be_falsey
+      end
+    end
+  end
 end
