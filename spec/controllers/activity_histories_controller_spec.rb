@@ -6,9 +6,9 @@ RSpec.describe ActivityHistoriesController, type: :controller do
     session[:user_id] = @act_history.user.id
   end
 
-  describe "GET /act_history.json" do
-    it "json eq activity_history  data" do
-      get :show, format: :json
+  describe "GET /users/:id/act_historiesjson" do
+    it "json eq activity_history data" do
+      get :show, params: { id: @act_history.user.id }, format: :json
       expect(response).to have_http_status(:success)
       json_hash = JSON.parse(response.body)
       #テストデータを複数の場合を考慮する必要がある。
@@ -22,7 +22,7 @@ RSpec.describe ActivityHistoriesController, type: :controller do
     context "save success" do
       it "redirect to 'ユーザーホーム画面'" do
         expect do
-          post :create,  body: {
+          post :create, params: { id: @act_history.user.id }, body: {
             activity_name: @act_history.activity_name,
             from_time: @act_history.from_time,
             to_time: @act_history.to_time,
@@ -35,7 +35,7 @@ RSpec.describe ActivityHistoriesController, type: :controller do
     context "save faild" do
       it "not redirect" do
         expect do
-          post :create,  body: {
+          post :create, params: { id: @act_history.user.id }, body: {
             activity_name: nil,
             from_time: @act_history.from_time,
             to_time: @act_history.to_time,

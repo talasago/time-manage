@@ -5,10 +5,10 @@ Rails.application.routes.draw do
   get    '/login',          to:  'sessions#new'
   post   '/login',          to:  'sessions#create'
   delete '/logout',         to:  'sessions#destroy'
-  post   '/act_histories/new',    to:  'activity_histories#create'
-  get    '/act_histories',        to:  'activity_histories#show'
-  patch  '/act_history',          to:  'activity_histories#update'
-  delete '/act_history',          to:  'activity_histories#destroy'
-  post   '/act_history/edit',     to:  'activity_histories#edit'
+  post   '/users/:id/act_histories/new',    to:  'activity_histories#create'
+  get    '/users/:id/act_histories',        to:  'activity_histories#show'
+  patch  '/users/:id/act_history',          to:  'activity_histories#update'
+  delete '/users/:id/act_history',          to:  'activity_histories#destroy'
+  post   '/users/:id/act_history/edit',     to:  'activity_histories#edit'
   resources :users
 end

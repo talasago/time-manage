@@ -1,5 +1,6 @@
 class ActivityHistoriesController < ApplicationController
   before_action :json_body_read,  only: %i[create edit update destroy]
+  before_action :logged_in_user_json
 
   def initialize
     @json_hash = ""
@@ -103,5 +104,20 @@ class ActivityHistoriesController < ApplicationController
   def json_body_read
     @json_str  = request.body.read # リクエストのJSON
     @json_hash = JSON.parse(@json_str, symbolize_names: true)
+  end
+
+  # ユーザーのログインを確認する
+  def logged_in_user_json
+    unless logged_in?
+      flash[:danger] = "ログインしてください"
+      error = { errorMsg: "ログインしてください" }
+
+      respond_to do |format|
+        format.json {
+          render json: error, status: :unprocessable_entity
+          # ログイン画面繊維はJS側
+        }
+      end
+    end
   end
 end
