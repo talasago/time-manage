@@ -69,4 +69,15 @@ RSpec.feature "UserLogin", type: :feature do
   end
 
   #セッションがない状態でuser/:idとURLを入れたらログインにリダイレクトするか。
+  describe "#show" do
+    context "when not login_state" do
+      it "redirect_to login page" do
+        visit user_path @user.id
+        expect(page).to have_title("ログイン")
+        expect(page).to have_http_status(:ok)
+        expect(page).to have_content("ログイン")
+        expect(page).to have_css("a[href=\"#{login_path}\"]")
+      end
+    end
+  end
 end

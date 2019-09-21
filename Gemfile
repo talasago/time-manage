@@ -3,6 +3,9 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.6.3'
 
+# エラーメッセージ日本語化
+gem 'rails-i18n'
+
 #full-calender
 gem 'fullcalendar-rails'
 gem 'momentjs-rails'
@@ -60,6 +63,7 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails'
   gem 'spring-commands-rspec'
+  gem 'pry-rails'
 end
 
 group :test do

@@ -1,5 +1,6 @@
 class ActivityHistoriesController < ApplicationController
   before_action :json_body_read,  only: %i[create edit update destroy]
+  before_action :logged_in_user_json
 
   def initialize
     @json_hash = ""
@@ -19,7 +20,7 @@ class ActivityHistoriesController < ApplicationController
         flash[:success] = "登録しました"
         format.json { render json: act_history.to_json, status: :created } # 無意味なrender。js側でリロードしているため
       else
-        format.json { render json: act_history.errors.messages.to_json, status: :unprocessable_entity }
+        format.json { render json: act_history.errors.full_messages.to_json, status: :unprocessable_entity }
       end
     end
   end
@@ -79,7 +80,7 @@ class ActivityHistoriesController < ApplicationController
         } # 無意味なrender。js側でリロードしているため
       else
         format.json {
-          render json: act_history.errors.messages.to_json, status: :unprocessable_entity
+          render json: act_history.errors.full_messages.to_json, status: :unprocessable_entity
         }
       end
     end
@@ -103,5 +104,20 @@ class ActivityHistoriesController < ApplicationController
   def json_body_read
     @json_str  = request.body.read # リクエストのJSON
     @json_hash = JSON.parse(@json_str, symbolize_names: true)
+  end
+
+  # ユーザーのログインを確認する
+  def logged_in_user_json
+    unless logged_in?
+      flash[:danger] = "ログインしてください"
+      error =  "ログインしてください"
+
+      respond_to do |format|
+        format.json {
+          render json: error.to_json, status: :unprocessable_entity
+          # ログイン画面繊維はJS側
+        }
+      end
+    end
   end
 end

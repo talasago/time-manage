@@ -14,22 +14,46 @@ RSpec.describe SessionsController, type: :controller do
 
   describe "POST #create" do
     context "when user exist and authenticate success" do
-      it "redirect to 'ユーザーホーム画面'" do
-        expect do
-          post :create, params: { session:
-            {
-              name:  @user.name,
-              password:  @user.password
+      context "remember check_on" do
+        it "redirect to 'ユーザーホーム画面' and" do
+          expect do
+            post :create, params: { session:
+              {
+                name:  @user.name,
+                password:  @user.password,
+                remember_me: "1"
+              }
             }
-          }
-        end.not_to change(User, :count)
-        expect(flash[:success]).to eq "#{@user.name}さん おかえりなさい"
-        expect(request).to redirect_to user_path(User.find_by(name: @user.name).id)
-        expect(session[:user_id]).to eq @user.id
+          end.not_to change(User, :count)
+          expect(flash[:success]).to eq "#{@user.name}さん おかえりなさい"
+          expect(request).to redirect_to user_path(User.find_by(name: @user.name).id)
+          expect(session[:user_id]).to eq @user.id
+          expect(cookies.permanent.signed[:user_id]).to_not eq nil
+          expect(cookies.permanent[:remember_token]).to_not eq nil
+        end
+      end
+
+      context "remember check_off" do
+        it "redirect to 'ユーザーホーム画面' and" do
+          expect do
+            post :create, params: { session:
+              {
+                name:  @user.name,
+                password:  @user.password,
+                remember_me: "0"
+              }
+            }
+          end.not_to change(User, :count)
+          expect(flash[:success]).to eq "#{@user.name}さん おかえりなさい"
+          expect(request).to redirect_to user_path(User.find_by(name: @user.name).id)
+          expect(session[:user_id]).to eq @user.id
+          expect(cookies.permanent.signed[:user_id]).to eq nil
+          expect(cookies.permanent[:remember_token]).to eq nil
+        end
       end
     end
 
-    context "when user exist and authenticate success" do
+    context "when user exist and authenticate faild" do
       it "not redirect and displayd error message " do
         expect do
           post :create, params: { session:
@@ -47,14 +71,41 @@ RSpec.describe SessionsController, type: :controller do
   end
 
   describe "delete #destroy" do
-    it "redirect to 'ユーザーホーム画面'" do
-      expect do
-        delete :destroy
-      end.not_to change(User, :count)
+    context "when session[:user_id] exist" do
+      before do
+        post :create, params: { session:
+          {
+            name:  @user.name,
+            password:  @user.password
+          }
+        }
+      end
 
-      expect(flash[:success]).to eq "ログアウトしました"
-      expect(request).to redirect_to root_path
-      expect(session[:user_id]).to eq nil
+      it "redirect to 'ユーザーホーム画面'" do
+        expect do
+          delete :destroy
+        end.not_to change(User, :count)
+
+        expect(flash[:success]).to eq "ログアウトしました"
+        expect(request).to redirect_to root_path
+        expect(session[:user_id]).to eq nil
+        expect(cookies.permanent.signed[:user_id]).to eq nil
+        expect(cookies.permanent[:remember_token]).to eq nil
+      end
+    end
+
+    context "when session[:user_id] not exist" do
+      it "redirect to 'ユーザーホーム画面'" do
+        expect do
+          delete :destroy
+        end.not_to change(User, :count)
+
+        expect(flash[:success]).to eq "ログアウトしました"
+        expect(request).to redirect_to root_path
+        expect(session[:user_id]).to eq nil
+        expect(cookies.permanent.signed[:user_id]).to eq nil
+        expect(cookies.permanent[:remember_token]).to eq nil
+      end
     end
   end
 end

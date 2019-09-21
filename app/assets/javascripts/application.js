@@ -31,7 +31,21 @@ document.addEventListener("turbolinks:load", function() {
       right: "prev next"
     },
     defaultView: 'agendaWeek',
-    events: '/act_histories.json',
+
+    events: function(start, end, timezone, callback) {
+      var url = $("#pathname").val() + '/act_histories.json' ;
+      var type = "get";
+
+      $.ajax({
+        url: url,
+        type: type,
+      }).done(function(data) {
+        callback(data);
+      }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
+        errorMsgShow(XMLHttpRequest);
+        window.location.href = "/login";
+      })
+    },
 
     //カレンダーの高さ
     height: window.innerHeight - 200,
@@ -74,7 +88,7 @@ document.addEventListener("turbolinks:load", function() {
     },
     //登録済みの行動履歴を確認
     eventClick: function(data) {
-      var url = "/act_history/edit";
+      var url = $("#pathname").val() + "/act_history/edit";
       var type = "post";
       var eventData = {
         title:  data.title,
@@ -111,7 +125,7 @@ document.addEventListener("turbolinks:load", function() {
  * 行動履歴入力フォームの削除ボタンクリックイベント
  */
 function deleteHistory() {
-  var url = "/act_history";
+  var url = $("#pathname").val() + "/act_history";
   var type = "delete";
   var eventData = {
     before_act_name:  $('input:hidden[id="beforeActName"]').val(),
@@ -122,13 +136,17 @@ function deleteHistory() {
   //非同期通信対策
   ajaxConection(eventData, url, type).done(function(data) {
     location.reload();
+  }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
+    errorMsgShow(XMLHttpRequest);
+    window.location.href = "/login";
   })
 }
+
 /**
  * 行動履歴入力フォームの更新ボタンクリックイベント
  */
 function updateHistory() {
-  var url = "/act_history";
+  var url = $("#pathname").val() + "/act_history";
   var type = "patch";
   var eventData = {
     activity_name:  $('#inputActName').val(),
@@ -144,7 +162,10 @@ function updateHistory() {
   ajaxConection(eventData, url, type).done(function(data) {
     location.reload();
   }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
-    errorMsgShow(XMLHttpRequest);
+    messeges = errorMsgShow(XMLHttpRequest);
+    if (messeges == "ログインしてください") {
+      window.location.href = "/login";
+    }
   })
 }
 
@@ -152,7 +173,7 @@ function updateHistory() {
  * 行動履歴入力フォームの登録ボタンクリックイベント
  */
 function createHistory() {
-  var url = "/act_histories/new"
+  var url = $("#pathname").val() + "/act_histories/new";
   var type = "post";
   var eventData = {
     activity_name:  $('#inputActName').val(),
@@ -165,7 +186,10 @@ function createHistory() {
   ajaxConection(eventData, url, type).done(function(data) {
     location.reload();
   }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
-    errorMsgShow(XMLHttpRequest);
+    messeges = errorMsgShow(XMLHttpRequest);
+    if (messeges == "ログインしてください") {
+      window.location.href = "/login";
+    }
   })
 }
 
@@ -217,24 +241,7 @@ function errorMsgShow(req) {
   } catch (e) {
   }
 
-  var messeges = "";
-  Object.keys(res).forEach(function(key) {
-    var val = this[key];
-    switch (key) {
-      case "activity_name":
-        messeges += "アクティビティ名 : " + val + "\n";
-        break;
-      case "from_time":
-        messeges += "開始日時 : " + val + "\n";
-        break;
-      case "to_time":
-        messeges += "終了日時 : " + val + "\n";
-        break;
-      case "remarks":
-        messeges += "備考 : " + val + "\n";
-        break;
-    }
-    val = "";
-  }, res);
-  alert(messeges);
+  res = res.toString().replace(/,/g,"\n");
+  alert(res);
+  return res;
 }

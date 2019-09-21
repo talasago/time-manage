@@ -21,7 +21,6 @@ RSpec.describe ActivityHistory, type: :model do
       end
     end
 
-
     describe "activity_name" do
       it "name nil" do
         @act_history.activity_name = nil
