@@ -1,0 +1,15 @@
+ja:
+  activerecord:
+    models:
+      user: ユーザー
+      activity_history: アクティビティ履歴
+    attributes:
+      user:
+        name: ユーザー名
+        password: パスワード
+        password_confirmation: パスワード(再確認)
+      activity_history:
+        activity_name: アクティビティ名
+        from_time: 開始時間
+        to_time: 終了時間
+        remarks: 備考

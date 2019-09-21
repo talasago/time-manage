@@ -20,7 +20,7 @@ class ActivityHistoriesController < ApplicationController
         flash[:success] = "登録しました"
         format.json { render json: act_history.to_json, status: :created } # 無意味なrender。js側でリロードしているため
       else
-        format.json { render json: act_history.errors.messages.to_json, status: :unprocessable_entity }
+        format.json { render json: act_history.errors.full_messages.to_json, status: :unprocessable_entity }
       end
     end
   end
@@ -80,7 +80,7 @@ class ActivityHistoriesController < ApplicationController
         } # 無意味なrender。js側でリロードしているため
       else
         format.json {
-          render json: act_history.errors.messages.to_json, status: :unprocessable_entity
+          render json: act_history.errors.full_messages.to_json, status: :unprocessable_entity
         }
       end
     end
@@ -110,11 +110,11 @@ class ActivityHistoriesController < ApplicationController
   def logged_in_user_json
     unless logged_in?
       flash[:danger] = "ログインしてください"
-      error = { errorMsg: "ログインしてください" }
+      error =  "ログインしてください"
 
       respond_to do |format|
         format.json {
-          render json: error, status: :unprocessable_entity
+          render json: error.to_json, status: :unprocessable_entity
           # ログイン画面繊維はJS側
         }
       end
