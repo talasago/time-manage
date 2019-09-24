@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
   root 'static_pages#home'
-  get    '/contact',        to: 'static_pages#contact'
-  post   '/users/new',      to: 'users#create'
+  get    '/contact',        to:  'static_pages#contact'
+  post   '/users/new',      to:  'users#create'
+  get    '/terms',          to:  'static_pages#terms'
   get    '/login',          to:  'sessions#new'
   post   '/login',          to:  'sessions#create'
   delete '/logout',         to:  'sessions#destroy'
