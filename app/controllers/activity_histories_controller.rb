@@ -50,7 +50,7 @@ class ActivityHistoriesController < ApplicationController
       @json_hash[:title],
       DateTime.parse(@json_hash[:start]),
       DateTime.parse(@json_hash[:end])
-    ).as_json(only: %i[activity_name from_ymd from_hm toYMD to_ymd to_hm remarks])
+    ).as_json(only: %i[activity_name from_ymd from_hm to_ymd to_hm remarks])
 
     respond_to do |format|
       format.json {
@@ -110,7 +110,7 @@ class ActivityHistoriesController < ApplicationController
   def logged_in_user_json
     unless logged_in?
       flash[:danger] = "ログインしてください"
-      error =  "ログインしてください"
+      error = "ログインしてください"
 
       respond_to do |format|
         format.json {

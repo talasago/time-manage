@@ -17,7 +17,7 @@ RSpec.feature "UserSignup", type: :feature do
       fill_in "user_password",	with: "password&4"
       fill_in "user_password_confirmation",	with: "password&4"
       expect do
-        click_on "アカウント作成"
+        click_on "利用規約に同意の上、ユーザを作成する"
       end.to change(User, :count).by(1)
 
       expect(page).to have_content(user_name + "さん ようこそ")
@@ -33,7 +33,7 @@ RSpec.feature "UserSignup", type: :feature do
         fill_in "user_password",	with: "password"
         fill_in "user_password_confirmation",	with: "password&4"
         expect do
-           click_on "アカウント作成"
+          click_on "利用規約に同意の上、ユーザを作成する"
         end.not_to change(User, :count)
 
         expect(page).to have_css "div#error_explanation"
