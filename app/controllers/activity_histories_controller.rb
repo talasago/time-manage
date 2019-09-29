@@ -4,7 +4,6 @@ class ActivityHistoriesController < ApplicationController
 
   def initialize
     @json_hash = ""
-    @json_str = ""
   end
 
   def create
@@ -12,7 +11,9 @@ class ActivityHistoriesController < ApplicationController
       activity_name:      @json_hash[:activity_name],
       from_time:          @json_hash[:from_time],
       to_time:            @json_hash[:to_time],
-      remarks:            @json_hash[:remarks]
+      remarks:            @json_hash[:remarks],
+      action:             "create",
+      current_user:       current_user
     )
 
     respond_to do |format|
@@ -41,7 +42,7 @@ class ActivityHistoriesController < ApplicationController
     act_history = current_user.activity_historys.select(
       "activity_name,
        to_char(from_time, 'YYYY-MM-DD') AS from_ymd,
-       to_char(from_time, 'HH24:MI')      AS from_hm,
+       to_char(from_time, 'HH24:MI')    AS from_hm,
        to_char(to_time, 'YYYY-MM-DD')   AS to_ymd,
        to_char(to_time, 'HH24:MI')      AS to_hm,
        remarks"
@@ -72,7 +73,9 @@ class ActivityHistoriesController < ApplicationController
           activity_name:      @json_hash[:activity_name],
           from_time:          @json_hash[:from_time],
           to_time:            @json_hash[:to_time],
-          remarks:            @json_hash[:remarks]
+          remarks:            @json_hash[:remarks],
+          action:             "update",
+          current_user:       current_user
         )
         flash[:success] = "更新しました"
         format.json {
@@ -102,8 +105,8 @@ class ActivityHistoriesController < ApplicationController
   private
 
   def json_body_read
-    @json_str  = request.body.read # リクエストのJSON
-    @json_hash = JSON.parse(@json_str, symbolize_names: true)
+    json_str  = request.body.read # リクエストのJSON
+    @json_hash = JSON.parse(json_str, symbolize_names: true)
   end
 
   # ユーザーのログインを確認する

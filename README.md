@@ -20,15 +20,13 @@
 rails new time-manage_app -d postgresql -BT
   bundleをインストールせずに実行します。
 
-config/database.ymlを環境ごとに変更します。
+config/database.ymlを環境ごとにパスワードなどを変更します。
+
+ディレクトリを移動します。
+  cd time-manage_app
 
 bundle install
   gemをインストールします。
-
-rails webpacker:install
-rails webpacker:install:react
-rails generate react:install
-  React.jsを使用するために上記コマンドを実行します。
 
 rails db:create
   データベースへのマイグレーションを実行します。
