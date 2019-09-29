@@ -48,8 +48,8 @@ class ActivityHistoriesController < ApplicationController
     ).where(
       "activity_name = ? and from_time = ? and to_time = ?",
       @json_hash[:title],
-      DateTime.parse(@json_hash[:start]),
-      DateTime.parse(@json_hash[:end])
+      Time.parse(@json_hash[:start]),
+      Time.parse(@json_hash[:end])
     ).as_json(only: %i[activity_name from_ymd from_hm to_ymd to_hm remarks])
 
     respond_to do |format|
@@ -63,8 +63,8 @@ class ActivityHistoriesController < ApplicationController
     act_history = current_user.activity_historys.find_by(
       "activity_name = ? and from_time = ? and to_time = ?",
       @json_hash[:before_act_name],
-      DateTime.parse(@json_hash[:before_from_time]),
-      DateTime.parse(@json_hash[:before_to_time])
+      Time.parse(@json_hash[:before_from_time]),
+      Time.parse(@json_hash[:before_to_time])
     )
 
     respond_to do |format|
@@ -90,8 +90,8 @@ class ActivityHistoriesController < ApplicationController
     act_history = current_user.activity_historys.find_by(
       "activity_name = ? and from_time = ? and to_time = ?",
       @json_hash[:before_act_name],
-      DateTime.parse(@json_hash[:before_from_time]),
-      DateTime.parse(@json_hash[:before_to_time])
+      Time.parse(@json_hash[:before_from_time]),
+      Time.parse(@json_hash[:before_to_time])
     )
 
     act_history.destroy

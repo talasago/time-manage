@@ -25,6 +25,6 @@ class ActivityHistory < ApplicationRecord
 
   # 日付時間に変換できる時にtrueを返す
   def datetime_valid?(datetime)
-    DateTime.parse(datetime) rescue false
+    Time.parse(datetime) rescue false
   end
 end
