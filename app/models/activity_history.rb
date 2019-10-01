@@ -35,6 +35,7 @@ class ActivityHistory < ApplicationRecord
 
   # 画面から受け取った開始時間、終了時間をもとにすでにDBに存在しているか検証する
   def same_time_zone_exists
+    return true if current_user.nil? #RSpecでこのクラスのインスタンス生成時にnilとなってエラーになるため
     exists_act_historys = current_user.activity_historys.where(
       "(from_time < ? AND ? < to_time OR from_time < ? AND ? < to_time) OR
        (? < from_time AND to_time < ?)",
