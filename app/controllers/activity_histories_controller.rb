@@ -1,9 +1,11 @@
 class ActivityHistoriesController < ApplicationController
-  before_action :json_body_read,  only: %i[create edit update destroy]
-  before_action :logged_in_user_json
+  before_action :json_body_read, only: %i[create edit update destroy]
+  before_action :logged_in_user_json, only: %i[create edit update destroy]
+  before_action :accessed_user_logged_in_diff, only:%i[create update destroy]
 
   def initialize
     @json_hash = ""
+    @accessed_user = ""
   end
 
   def create
@@ -27,11 +29,19 @@ class ActivityHistoriesController < ApplicationController
   end
 
   def show
-    act_histories = current_user.activity_historys.select(
-      "activity_name AS title,
-      from_time AS start,
-      to_time   AS end"
-    ).as_json(only: %i[title start end])
+    if accessed_user_logged_in?
+      act_histories = current_user.activity_historys.select(
+        "activity_name AS title,
+        from_time AS start,
+        to_time   AS end"
+      ).as_json(only: %i[title start end])
+    else
+      act_histories = @accessed_user.activity_historys.select(
+        "activity_name AS title,
+        from_time AS start,
+        to_time   AS end"
+      ).as_json(only: %i[title start end])
+    end
 
     respond_to do |format|
       format.json { render json: act_histories.to_json }
@@ -39,19 +49,35 @@ class ActivityHistoriesController < ApplicationController
   end
 
   def edit
-    act_history = current_user.activity_historys.select(
-      "activity_name,
-       to_char(from_time, 'YYYY-MM-DD') AS from_ymd,
-       to_char(from_time, 'HH24:MI')    AS from_hm,
-       to_char(to_time, 'YYYY-MM-DD')   AS to_ymd,
-       to_char(to_time, 'HH24:MI')      AS to_hm,
-       remarks"
-    ).where(
-      "activity_name = ? and from_time = ? and to_time = ?",
-      @json_hash[:title],
-      Time.parse(@json_hash[:start]),
-      Time.parse(@json_hash[:end])
-    ).as_json(only: %i[activity_name from_ymd from_hm to_ymd to_hm remarks])
+    if accessed_user_logged_in?
+      act_history = current_user.activity_historys.select(
+        "activity_name,
+         to_char(from_time, 'YYYY-MM-DD') AS from_ymd,
+         to_char(from_time, 'HH24:MI')    AS from_hm,
+         to_char(to_time, 'YYYY-MM-DD')   AS to_ymd,
+         to_char(to_time, 'HH24:MI')      AS to_hm,
+         remarks"
+      ).where(
+        "activity_name = ? and from_time = ? and to_time = ?",
+        @json_hash[:title],
+        Time.parse(@json_hash[:start]),
+        Time.parse(@json_hash[:end])
+      ).as_json(only: %i[activity_name from_ymd from_hm to_ymd to_hm remarks])
+    else
+      act_history = @accessed_user.activity_historys.select(
+        "activity_name,
+         to_char(from_time, 'YYYY-MM-DD') AS from_ymd,
+         to_char(from_time, 'HH24:MI')    AS from_hm,
+         to_char(to_time, 'YYYY-MM-DD')   AS to_ymd,
+         to_char(to_time, 'HH24:MI')      AS to_hm,
+         remarks"
+      ).where(
+        "activity_name = ? and from_time = ? and to_time = ?",
+        @json_hash[:title],
+        Time.parse(@json_hash[:start]),
+        Time.parse(@json_hash[:end])
+      ).as_json(only: %i[activity_name from_ymd from_hm to_ymd to_hm remarks])
+    end
 
     respond_to do |format|
       format.json {
@@ -105,7 +131,7 @@ class ActivityHistoriesController < ApplicationController
   private
 
   def json_body_read
-    json_str  = request.body.read # リクエストのJSON
+    json_str = request.body.read # リクエストのJSON
     @json_hash = JSON.parse(json_str, symbolize_names: true)
   end
 
@@ -118,7 +144,27 @@ class ActivityHistoriesController < ApplicationController
       respond_to do |format|
         format.json {
           render json: error.to_json, status: :unprocessable_entity
-          # ログイン画面繊維はJS側
+          # ログイン画面遷移はJS側
+        }
+      end
+    end
+  end
+
+  # アクセスされたユーザーがログインしているユーザと同じ場合trueを返す。
+  def accessed_user_logged_in?
+    @accessed_user = User.find_by(id: params[:id])
+    current_user == @accessed_user ? true : false
+  end
+
+  # アクセスされたユーザーがログインしているユーザが異なる場合、js側で画面遷移する
+  def accessed_user_logged_in_diff
+    unless accessed_user_logged_in?
+      error = "意図しない操作が行われました。"
+
+      respond_to do |format|
+        format.json {
+          render json: error.to_json, status: :unprocessable_entity
+          # ログイン画面遷移はJS側
         }
       end
     end

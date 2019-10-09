@@ -137,8 +137,12 @@ function deleteHistory() {
   ajaxConection(eventData, url, type).done(function(data) {
     location.reload();
   }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
-    errorMsgShow(XMLHttpRequest);
-    window.location.href = "/login";
+    messeges = errorMsgShow(XMLHttpRequest);
+    if (messeges == "ログインしてください") {
+      window.location.href = "/login";
+    } else if (messeges == "意図しない操作が行われました。") {
+      window.location.href = "/";
+    }
   })
 }
 
@@ -165,7 +169,10 @@ function updateHistory() {
     messeges = errorMsgShow(XMLHttpRequest);
     if (messeges == "ログインしてください") {
       window.location.href = "/login";
+    } else if (messeges == "意図しない操作が行われました。") {
+      window.location.href = "/";
     }
+
   })
 }
 
@@ -189,6 +196,8 @@ function createHistory() {
     messeges = errorMsgShow(XMLHttpRequest);
     if (messeges == "ログインしてください") {
       window.location.href = "/login";
+    } else if (messeges == "意図しない操作が行われました。") {
+      window.location.href = "/";
     }
   })
 }
