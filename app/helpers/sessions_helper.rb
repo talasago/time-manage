@@ -26,6 +26,12 @@ module SessionsHelper
     end
   end
 
+  # アクセスされたユーザーがログインしているユーザと同じ場合trueを返す。
+  def accessed_user_logged_in?
+    @accessed_user = User.find_by(id: params[:id])
+    current_user == @accessed_user ? true : false
+  end
+
   # ユーザーがログインしていればtrueを返す
   def logged_in?
     !current_user.nil?

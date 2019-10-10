@@ -1,7 +1,8 @@
 class ActivityHistoriesController < ApplicationController
+  include SessionsHelper
   before_action :json_body_read, only: %i[create edit update destroy]
   before_action :logged_in_user_json, only: %i[create edit update destroy]
-  before_action :accessed_user_logged_in_diff, only:%i[create update destroy]
+  before_action :accessed_user_logged_in_diff, only: %i[create update destroy]
 
   def initialize
     @json_hash = ""
@@ -148,12 +149,6 @@ class ActivityHistoriesController < ApplicationController
         }
       end
     end
-  end
-
-  # アクセスされたユーザーがログインしているユーザと同じ場合trueを返す。
-  def accessed_user_logged_in?
-    @accessed_user = User.find_by(id: params[:id])
-    current_user == @accessed_user ? true : false
   end
 
   # アクセスされたユーザーがログインしているユーザが異なる場合、js側で画面遷移する
