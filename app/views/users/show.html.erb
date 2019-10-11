@@ -3,7 +3,7 @@
   <%= hidden_field_tag :pathname, user_path %>
 
   <%# jsで画面表示を変更する様%>
-  <% if accessed_user_logged_in? %>
+  <% if accessed_user_logged_in?(@user)%>
     <%= hidden_field_tag :accessed_user_logged_in_flg, "0" %>
   <% else %>
     <%= hidden_field_tag :accessed_user_logged_in_flg, "1" %>

@@ -30,19 +30,14 @@ class ActivityHistoriesController < ApplicationController
   end
 
   def show
-    if accessed_user_logged_in?
-      act_histories = current_user.activity_historys.select(
-        "activity_name AS title,
-        from_time AS start,
-        to_time   AS end"
-      ).as_json(only: %i[title start end])
-    else
-      act_histories = @accessed_user.activity_historys.select(
-        "activity_name AS title,
-        from_time AS start,
-        to_time   AS end"
-      ).as_json(only: %i[title start end])
-    end
+    accessed_user = User.find_by(id: params[:id])
+    user = accessed_user_logged_in?(accessed_user) ? current_user : accessed_user
+
+    act_histories = user.activity_historys.select(
+      "activity_name AS title,
+      from_time AS start,
+      to_time   AS end"
+    ).as_json(only: %i[title start end])
 
     respond_to do |format|
       format.json { render json: act_histories.to_json }
@@ -50,35 +45,22 @@ class ActivityHistoriesController < ApplicationController
   end
 
   def edit
-    if accessed_user_logged_in?
-      act_history = current_user.activity_historys.select(
-        "activity_name,
-         to_char(from_time, 'YYYY-MM-DD') AS from_ymd,
-         to_char(from_time, 'HH24:MI')    AS from_hm,
-         to_char(to_time, 'YYYY-MM-DD')   AS to_ymd,
-         to_char(to_time, 'HH24:MI')      AS to_hm,
-         remarks"
-      ).where(
-        "activity_name = ? and from_time = ? and to_time = ?",
-        @json_hash[:title],
-        Time.parse(@json_hash[:start]),
-        Time.parse(@json_hash[:end])
-      ).as_json(only: %i[activity_name from_ymd from_hm to_ymd to_hm remarks])
-    else
-      act_history = @accessed_user.activity_historys.select(
-        "activity_name,
-         to_char(from_time, 'YYYY-MM-DD') AS from_ymd,
-         to_char(from_time, 'HH24:MI')    AS from_hm,
-         to_char(to_time, 'YYYY-MM-DD')   AS to_ymd,
-         to_char(to_time, 'HH24:MI')      AS to_hm,
-         remarks"
-      ).where(
-        "activity_name = ? and from_time = ? and to_time = ?",
-        @json_hash[:title],
-        Time.parse(@json_hash[:start]),
-        Time.parse(@json_hash[:end])
-      ).as_json(only: %i[activity_name from_ymd from_hm to_ymd to_hm remarks])
-    end
+    accessed_user = User.find_by(id: params[:id])
+    user = accessed_user_logged_in?(accessed_user) ? current_user : accessed_user
+
+    act_history = user.activity_historys.select(
+      "activity_name,
+       to_char(from_time, 'YYYY-MM-DD') AS from_ymd,
+       to_char(from_time, 'HH24:MI')    AS from_hm,
+       to_char(to_time, 'YYYY-MM-DD')   AS to_ymd,
+       to_char(to_time, 'HH24:MI')      AS to_hm,
+       remarks"
+    ).where(
+      "activity_name = ? and from_time = ? and to_time = ?",
+      @json_hash[:title],
+      Time.parse(@json_hash[:start]),
+      Time.parse(@json_hash[:end])
+    ).as_json(only: %i[activity_name from_ymd from_hm to_ymd to_hm remarks])
 
     respond_to do |format|
       format.json {
