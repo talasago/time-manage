@@ -11,5 +11,93 @@
   <%= f.label :password_confirmation %>
   <%= f.password_field :password_confirmation, class: "form-control" %>
 
+  <%= f.label :age_birth_checkflg %>
+  <%= f.radio_button :age_birth_checkflg, "0" %>
+  <%= f.label :age_birth_checkflg, "生年月日を登録", {value: "0", style: "display: inline-block;"} %>
+  <%= f.radio_button :age_birth_checkflg, "1" %>
+  <%= f.label :age_birth_checkflg, "年齢を登録", {value: "1", style: "display: inline-block;"} %>
+  <%= f.radio_button :age_birth_checkflg, "2" %>
+  <%= f.label :age_birth_checkflg, "生年月日・年齢どちらも登録しない", {value: "2", style: "display: inline-block;"} %>
+
+  <p>生年月日を入れないと年齢が自動的に更新されない旨を書く。</p>
+  <%= f.label :birth_date %>
+  <%= f.date_select :birth_date, options = {
+    use_month_numbers: true,
+    date_separator: "/",
+    start_year: 1920,
+    end_year: Time.current.year,
+    include_blank: true,
+    selected: "1990/01/01".to_date
+  } %>
+
+  <%= f.label :age %>
+  <%= f.number_field(:age, in: 1.0..100.0, step: 1) %>
+
+  <%= f.label :gender %>
+  <%= f.select :gender, [["回答しない", "0"], ["男", "1"], ["女", "2"], ["その他", "9"]] %>
+
+  <%= f.label :employment %>
+  <%= f.text_area :employment, class: "form-control" %>
+
+  <%= f.label :hobby %>
+  <%= f.text_area :hobby, class: "form-control" %>
+
+  <%= f.label :user_icon %>
+  <%= f.file_field :user_icon, accept: "image/jpeg,image/gif,image/png" %>
+
+  <%= f.label :remarks %>
+  <%= f.text_area :remarks, class: "form-control" %>
+
   <%= f.submit yield(:button_text), class: "btn btn-primary" %>
+
 <% end %>
+
+<script type="text/javascript">
+  $(function(){
+     $("input[name=user\\[age_birth_checkflg\\]]:radio").change(function() {
+        var radioval = $(this).val();
+
+        var birth_date_obj1 = document.getElementById("user_birth_date_1i");
+        var birth_date_obj2 = document.getElementById("user_birth_date_2i");
+        var birth_date_obj3 = document.getElementById("user_birth_date_3i");
+        var user_age_obj = document.getElementById("user_age");
+
+        switch (radioval) {
+          case "0":
+            birth_date_obj1.disabled = false
+            birth_date_obj2.disabled = false
+            birth_date_obj3.disabled = false
+            user_age_obj = true;
+            $("#user_age").val("");
+            break;
+          case "1":
+            birth_date_obj1.disabled = true;
+            birth_date_obj2.disabled = true;
+            birth_date_obj3.disabled = true;
+            user_age_obj = false
+            $("#user_birth_date_1i").val("");
+            $("#user_birth_date_2i").val("");
+            $("#user_birth_date_3i").val("");
+            break;
+          case "2":
+            birth_date_obj1.disabled = true;
+            birth_date_obj2.disabled = true;
+            birth_date_obj3.disabled = true;
+            user_age_obj = true;
+            $("#user_birth_date_1i").val("");
+            $("#user_birth_date_2i").val("");
+            $("#user_birth_date_3i").val("");
+            $("#user_age").val("");
+            break;
+        }
+     });
+  });
+
+  $("#user_user_icon").bind("change", function() {
+    var size_in_megabytes = this.files[0].size/1024/1024;
+    if (size_in_megabytes > 5) {
+      alert("アイコンは5MB以下にしてください。");
+      $("#user_user_icon").val("");
+    }
+  });
+</script>
