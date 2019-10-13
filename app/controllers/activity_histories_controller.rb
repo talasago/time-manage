@@ -135,7 +135,8 @@ class ActivityHistoriesController < ApplicationController
 
   # アクセスされたユーザーがログインしているユーザが異なる場合、js側で画面遷移する
   def accessed_user_logged_in_diff
-    unless accessed_user_logged_in?
+    accessed_user = User.find_by(id: params[:id])
+    unless accessed_user_logged_in?(accessed_user)
       error = "意図しない操作が行われました。"
 
       respond_to do |format|
