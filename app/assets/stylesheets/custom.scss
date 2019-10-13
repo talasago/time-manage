@@ -305,3 +305,10 @@ input {
     border-bottom: 1px solid $gray-lighter;
   }
 }
+
+.picture {
+  margin-top: 10px;
+  input {
+    border: 0;
+  }
+}

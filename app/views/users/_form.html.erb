@@ -42,8 +42,10 @@
   <%= f.label :hobby %>
   <%= f.text_area :hobby, class: "form-control" %>
 
-  <%= f.label :user_icon %>
-  <%= f.file_field :user_icon, accept: "image/jpeg,image/gif,image/png" %>
+  <span class="picture">
+    <%= f.label :user_icon %>
+    <%= f.file_field :user_icon, accept: "image/jpeg,image/gif,image/png" %>
+  </span>
 
   <%= f.label :remarks %>
   <%= f.text_area :remarks, class: "form-control" %>
