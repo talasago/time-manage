@@ -23,10 +23,16 @@
 //= require_tree .
 
 document.addEventListener("turbolinks:load", function() {
+  hedLeftItem = "today month,agendaWeek";
+
+  if ($("#accessed_user_logged_in_flg").val() == "0") {
+    hedLeftItem += " historyInsButton";
+  }
+
   $('#calendar').fullCalendar({
     // ヘッダーのタイトルとボタン
     header: {
-      left: "today month,agendaWeek historyInsButton",
+      left: hedLeftItem,
       center: "title",
       right: "prev next"
     },
@@ -102,8 +108,14 @@ document.addEventListener("turbolinks:load", function() {
       $('input:hidden[id="beforeToTime"]').val(eventData.end);
 
       //登録ボタンを非表示に
-      $('#deleteButton').show();
-      $('#updateButton').show();
+      //ログインユーザと表示されているユーザが同じ場合のみ削除更新ボタンを表示する。
+      if ($("#accessed_user_logged_in_flg").val() == "0") {
+        $('#deleteButton').show();
+        $('#updateButton').show();
+      } else {
+        $('#deleteButton').hide();
+        $('#updateButton').hide();
+      }
       $('#createButton').hide();
 
       //非同期通信対策
@@ -137,8 +149,12 @@ function deleteHistory() {
   ajaxConection(eventData, url, type).done(function(data) {
     location.reload();
   }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
-    errorMsgShow(XMLHttpRequest);
-    window.location.href = "/login";
+    messeges = errorMsgShow(XMLHttpRequest);
+    if (messeges == "ログインしてください") {
+      window.location.href = "/login";
+    } else if (messeges == "意図しない操作が行われました。") {
+      window.location.href = "/";
+    }
   })
 }
 
@@ -165,7 +181,10 @@ function updateHistory() {
     messeges = errorMsgShow(XMLHttpRequest);
     if (messeges == "ログインしてください") {
       window.location.href = "/login";
+    } else if (messeges == "意図しない操作が行われました。") {
+      window.location.href = "/";
     }
+
   })
 }
 
@@ -189,6 +208,8 @@ function createHistory() {
     messeges = errorMsgShow(XMLHttpRequest);
     if (messeges == "ログインしてください") {
       window.location.href = "/login";
+    } else if (messeges == "意図しない操作が行われました。") {
+      window.location.href = "/";
     }
   })
 }
