@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_28_145230) do
+ActiveRecord::Schema.define(version: 2019_10_13_061024) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,12 @@ ActiveRecord::Schema.define(version: 2019_08_28_145230) do
     t.string "remember_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "gender", limit: 1, default: "0"
+    t.date "birth_date"
+    t.integer "age", limit: 2
+    t.string "user_icon"
+    t.string "employment"
+    t.string "hobby"
+    t.string "remarks"
   end
-
 end
