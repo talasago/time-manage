@@ -19,7 +19,7 @@
   <%= f.radio_button :age_birth_checkflg, "2" %>
   <%= f.label :age_birth_checkflg, "生年月日・年齢どちらも登録しない", {value: "2", style: "display: inline-block;"} %>
 
-  <p>生年月日を入れないと年齢が自動的に更新されない旨を書く。</p>
+  <p>※生年月日を入力すると場合、年齢が自動的に算出されます。</p>
   <%= f.label :birth_date %>
   <%= f.date_select :birth_date, options = {
     use_month_numbers: true,
@@ -51,7 +51,6 @@
   <%= f.text_area :remarks, class: "form-control" %>
 
   <%= f.submit yield(:button_text), class: "btn btn-primary" %>
-
 <% end %>
 
 <script type="text/javascript">

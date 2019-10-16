@@ -8,7 +8,7 @@ class User < ApplicationRecord
    format: { with: /\A[a-zA-Z0-9]+\z/ }
   validates :password, presence: true, length: { minimum: 8 }
   validates :age_birth_checkflg, presence: true
-  validates :gender, inclusion: { in: ["aa", "bb"] }
+  validates :gender, inclusion: { in: ["0", "1", "2", "9"] }
   validates :age, presence: true, format: { with: /\A[0-9]+\z/ },
     if: Proc.new { |a| a.age_birth_checkflg?("1") }
   with_options if: Proc.new { |a| a.age_birth_checkflg?("0") } do
@@ -58,6 +58,7 @@ class User < ApplicationRecord
   private
 
   def check_date
+    return false if birth_date.blank?
     if Date.parse(birth_date) <= Date.today
       errors.add(:birth_date, "生年月日は今日より過去である必要があります。")
     end
