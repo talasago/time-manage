@@ -27,7 +27,9 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :password, :password_confirmation, :age_birth_checkflg, :age, :gender, :employment, :hobby, :remarks)
+    params.require(:user).permit(:name, :password, :password_confirmation,
+      "birth_date(1i)", "birth_date(2i)", "birth_date(3i)",
+      :age_birth_checkflg, :age, :gender, :employment, :hobby, :remarks)
   end
 
   # ユーザーのログインを確認する

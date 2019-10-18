@@ -59,7 +59,7 @@ class User < ApplicationRecord
 
   def check_date
     return false if birth_date.blank?
-    if Date.parse(birth_date) <= Date.today
+    if birth_date >= Date.today
       errors.add(:birth_date, "生年月日は今日より過去である必要があります。")
     end
   end
