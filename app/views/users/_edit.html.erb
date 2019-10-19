@@ -1,0 +1,64 @@
+<div id="user-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" >
+  <div class="modal-dialog">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">ユーザー情報詳細</h4>
+      </div>
+
+      <%= form_for(@user, remote: true, html: { class: "modal-body" } )do |f| %>
+        <div class="container">
+          <div class="row">
+            <div class="col-md-2">
+              <%= f.label :name %>
+            </div>
+            <div class="col-md-5">
+              <%= f.text_field :name, class: "form-control input-sm ime-active", readonly: true %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2">
+              <%= f.label :age %>
+            </div>
+            <div class="col-md-5">
+              <%= f.text_field :age, class: "form-control input-sm ime-active", readonly: true %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2">
+              <%= f.label :gender %>
+            </div>
+            <div class="col-md-5">
+              <%= f.text_field :gender, class: "form-control input-sm ime-active", readonly: true %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2">
+              <%= f.label :employment %>
+            </div>
+            <div class="col-md-5">
+              <%= f.text_area :employment, class: "form-control input-sm ime-active", readonly: true %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2">
+              <%= f.label :hobby %>
+            </div>
+            <div class="col-md-5">
+              <%= f.text_area :hobby, class: "form-control input-sm ime-active", readonly: true %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2">
+              <%= f.label :remarks %>
+            </div>
+            <div class="col-md-5">
+              <%= f.text_area :remarks, class: "form-control input-sm ime-active", readonly: true %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
