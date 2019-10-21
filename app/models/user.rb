@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   # アクセサ
-  attr_accessor :remember_token, :age_birth_checkflg
+  attr_accessor :remember_token
   # リレーション
   has_many :activity_historys, dependent: :destroy
   # バリデーション
