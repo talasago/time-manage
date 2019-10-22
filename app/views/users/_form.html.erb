@@ -12,15 +12,24 @@
   <%= f.password_field :password_confirmation, class: "form-control" %>
 
   <%= f.label :age_birth_checkflg %>
+  <div>
+    <div>
+      <label class="radio-inline">
+        <%= f.radio_button :age_birth_checkflg, "0" %>生年月日を登録
+      </label>
+    </div>
+    <div>
+      <label class="radio-inline">
+        <%= f.radio_button :age_birth_checkflg, "1" %>年齢を登録
+      </label>
+    </div>
+    <div>
+      <label class="radio-inline">
+        <%= f.radio_button :age_birth_checkflg, "2" %>生年月日・年齢どちらも登録しない
+      </label>
+    </div>
+  </div>
 
-  <%= f.radio_button :age_birth_checkflg, "0" %>
-  <%= f.label :age_birth_checkflg, "生年月日を登録", {value: "0", style: "display: inline-block;"} %>
-  <%= f.radio_button :age_birth_checkflg, "1" %>
-  <%= f.label :age_birth_checkflg, "年齢を登録", {value: "1", style: "display: inline-block;"} %>
-  <%= f.radio_button :age_birth_checkflg, "2" %>
-  <%= f.label :age_birth_checkflg, "生年月日・年齢どちらも登録しない", {value: "2", style: "display: inline-block;"} %>
-
-  <p>※生年月日を入力すると場合、年齢が自動的に算出されます。</p>
   <%= f.label :birth_date %>
   <%= f.date_select :birth_date, options = {
     use_month_numbers: true,
