@@ -51,11 +51,6 @@
   <%= f.label :hobby %>
   <%= f.text_area :hobby, class: "form-control" %>
 
-  <span class="picture">
-    <%= f.label :user_icon %>
-    <%= f.file_field :user_icon, accept: "image/jpeg,image/gif,image/png" %>
-  </span>
-
   <%= f.label :remarks %>
   <%= f.text_area :remarks, class: "form-control" %>
 
@@ -100,13 +95,5 @@
             break;
         }
      });
-  });
-
-  $("#user_user_icon").bind("change", function() {
-    var size_in_megabytes = this.files[0].size/1024/1024;
-    if (size_in_megabytes > 5) {
-      alert("アイコンは5MB以下にしてください。");
-      $("#user_user_icon").val("");
-    }
   });
 </script>
