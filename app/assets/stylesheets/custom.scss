@@ -247,6 +247,24 @@ input {
   margin-left: 0;
 }
 
+.radio-buttom {
+  margin-bottom: 15px;
+}
+
+.date-select {
+  display: inline-block;
+  width: 15%;
+  margin-left: 3px;
+}
+
+#user_age {
+  width: 13%;
+}
+
+#user_gender {
+  width: 25%;
+}
+
 /* calendar */
 .fc-sun {
   color: red;

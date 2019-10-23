@@ -24,26 +24,32 @@
       </label>
     </div>
     <div>
-      <label class="radio-inline">
+      <label class="radio-inline radio-buttom">
         <%= f.radio_button :age_birth_checkflg, "2" %>生年月日・年齢どちらも登録しない
       </label>
     </div>
   </div>
 
   <%= f.label :birth_date %>
-  <%= f.date_select :birth_date, options = {
-    use_month_numbers: true,
-    date_separator: "/",
-    start_year: 1920,
-    end_year: Time.current.year,
-    include_blank: true
-  } %>
+  <div>
+    <%= f.date_select :birth_date, options = {
+      use_month_numbers: true,
+      date_separator: "/",
+      start_year: 1920,
+      end_year: Time.current.year,
+      include_blank: true
+    }, class: "date-select" %>
+  </div>
 
   <%= f.label :age %>
-  <%= f.number_field(:age, in: 1.0..100.0, step: 1) %>
+  <div>
+    <%= f.number_field :age, in: 1.0..100.0, step: 1, class: "form-control"  %>
+  </div>
 
   <%= f.label :gender %>
-  <%= f.select :gender, [["回答しない", "0"], ["男", "1"], ["女", "2"], ["その他", "9"]] %>
+  <div>
+    <%= f.select :gender, [["回答しない", "0"], ["男", "1"], ["女", "2"], ["その他", "9"]] %>
+  </div>
 
   <%= f.label :employment %>
   <%= f.text_area :employment, class: "form-control" %>
