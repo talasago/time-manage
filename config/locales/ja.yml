@@ -8,6 +8,13 @@ ja:
         name: ユーザー名
         password: パスワード
         password_confirmation: パスワード(再確認)
+        gender: 性別
+        age_birth_checkflg: 生年月日と年齢どちらを登録するか選択
+        birth_date: 生年月日
+        age: 年齢
+        employment: 職業
+        hobby: 趣味
+        remarks: その他
       activity_history:
         activity_name: アクティビティ名
         from_time: 開始時間
