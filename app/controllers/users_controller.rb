@@ -30,6 +30,19 @@ class UsersController < ApplicationController
 
   def edit
     @user = User.find(params[:id])
+    redirect_to(root_path) unless accessed_user_logged_in?(@user)
+  end
+
+  def update
+    @user = User.find(params[:id])
+    redirect_to(root_path) unless accessed_user_logged_in?(@user)
+
+    if @user.update_attributes(user_params)
+      flash[:success] = "ユーザー情報を更新しました！"
+      redirect_to @user
+    else
+      render 'edit'
+    end
   end
 
   private
