@@ -17,6 +17,16 @@
           <% gender_name = "その他" %>
       <% end %>
 
+      <% case @user.age_birth_checkflg %>
+        <% when "0" %>
+          <% age_float = ((Time.now - Time.parse(@user.birth_date.to_s)) / 60 / 60 / 24) / 365 %>
+          <% calc_age = BigDecimal(age_float.to_s).floor %>
+        <% when "1" %>
+         <% calc_age = @user.age %>
+        <% when "2" %>
+          <% calc_age = "" %>
+      <% end %>
+
       <div class="container">
         <div class="row">
           <div class="col-md-2">
@@ -31,7 +41,7 @@
             <%= f.label :age %>
           </div>
           <div class="col-md-5">
-            <%= f.text_field :age, class: "form-control input-sm ime-active", readonly: true %>
+            <%= f.text_field :age, value: calc_age, class: "form-control input-sm ime-active", readonly: true %>
           </div>
         </div>
         <div class="row">
