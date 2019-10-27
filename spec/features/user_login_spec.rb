@@ -43,7 +43,7 @@ RSpec.feature "UserLogin", type: :feature do
       expect(page).to have_css("a[href=\"#{logout_path}\"]")
       expect(page).to have_css("a[href=\"#{user_path(@user)}\"]")
 
-      click_on @user.name
+      first(".dropdown").click_link @user.name
       click_on "ログアウト"
 
       expect(page).to have_css("a[href=\"#{login_path}\"]")
