@@ -7,6 +7,15 @@ class User < ApplicationRecord
   validates :name, presence: true, uniqueness: true, length: { maximum: 50 },
    format: { with: /\A[a-zA-Z0-9]+\z/ }
   validates :password, presence: true, length: { minimum: 8 }
+  validates :age_birth_checkflg, presence: true
+  validates :gender, inclusion: { in: ["0", "1", "2", "9"] }
+  validates :age, presence: true, format: { with: /\A[0-9]+\z/ },
+    if: Proc.new { |a| a.age_birth_checkflg?("1") }
+  with_options if: Proc.new { |a| a.age_birth_checkflg?("0") } do
+    validates :birth_date, presence: true
+    validate :check_date
+  end
+
   # パスワード認証用
   has_secure_password
 
@@ -39,5 +48,19 @@ class User < ApplicationRecord
   # 永続セッション用ユーザーのログイン情報を破棄する
   def forget
     update_attribute(:remember_digest, nil)
+  end
+
+  # age_birth_checkflgの値と引数を比較する。
+  def age_birth_checkflg?(param)
+    param == age_birth_checkflg ? true : false
+  end
+
+  private
+
+  def check_date
+    return false if birth_date.blank?
+    if birth_date >= Date.today
+      errors.add(:birth_date, "生年月日は今日より過去である必要があります。")
+    end
   end
 end

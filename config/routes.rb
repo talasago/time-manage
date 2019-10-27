@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get    '/login',          to:  'sessions#new'
   post   '/login',          to:  'sessions#create'
   delete '/logout',         to:  'sessions#destroy'
+  get    '/users/:id/show_detail',          to:  'users#show_detail', as: 'user_show_detail'
   post   '/users/:id/act_histories/new',    to:  'activity_histories#create'
   get    '/users/:id/act_histories',        to:  'activity_histories#show'
   patch  '/users/:id/act_history',          to:  'activity_histories#update'

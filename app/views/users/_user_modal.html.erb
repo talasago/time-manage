@@ -1,0 +1,81 @@
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h4 class="modal-title">ユーザー情報詳細</h4>
+    </div>
+    <%= form_for(@user, remote: true, html: { class: "modal-body" } )do |f| %>
+
+      <% case @user.gender %>
+        <% when "0" %>
+          <% gender_name = "回答しない" %>
+        <% when "1" %>
+          <% gender_name = "男" %>
+        <% when "2" %>
+          <% gender_name = "女" %>
+        <% when "9" %>
+          <% gender_name = "その他" %>
+      <% end %>
+
+      <% case @user.age_birth_checkflg %>
+        <% when "0" %>
+          <% age_float = ((Time.now - Time.parse(@user.birth_date.to_s)) / 60 / 60 / 24) / 365 %>
+          <% calc_age = BigDecimal(age_float.to_s).floor %>
+        <% when "1" %>
+         <% calc_age = @user.age %>
+        <% when "2" %>
+          <% calc_age = "" %>
+      <% end %>
+
+      <div class="container">
+        <div class="row">
+          <div class="col-md-2">
+            <%= f.label :name %>
+          </div>
+          <div class="col-md-5">
+            <%= f.text_field :name, class: "form-control input-sm ime-active", readonly: true %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            <%= f.label :age %>
+          </div>
+          <div class="col-md-5">
+            <%= f.text_field :age, value: calc_age, class: "form-control input-sm ime-active", readonly: true %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            <%= f.label :gender %>
+          </div>
+          <div class="col-md-5">
+            <%= f.text_field :gender, value: gender_name, class: "form-control input-sm ime-active", readonly: true %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            <%= f.label :employment %>
+          </div>
+          <div class="col-md-5">
+            <%= f.text_area :employment, class: "form-control input-sm ime-active", readonly: true %>
+          </div>
+        </div>
+        <div class="row">
+        <div class="col-md-2">
+          <%= f.label :hobby %>
+        </div>
+        <div class="col-md-5">
+          <%= f.text_area :hobby, class: "form-control input-sm ime-active", readonly: true %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2">
+          <%= f.label :remarks %>
+        </div>
+        <div class="col-md-5">
+          <%= f.text_area :remarks, class: "form-control input-sm ime-active", readonly: true %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -24,10 +24,33 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
+  def show_detail
+    @user = User.find(params[:id])
+  end
+
+  def edit
+    @user = User.find(params[:id])
+    redirect_to(root_path) unless accessed_user_logged_in?(@user)
+  end
+
+  def update
+    @user = User.find(params[:id])
+    redirect_to(root_path) unless accessed_user_logged_in?(@user)
+
+    if @user.update_attributes(user_params)
+      flash[:success] = "ユーザー情報を更新しました！"
+      redirect_to @user
+    else
+      render 'edit'
+    end
+  end
+
   private
 
   def user_params
-    params.require(:user).permit(:name, :password, :password_confirmation)
+    params.require(:user).permit(:name, :password, :password_confirmation,
+      "birth_date(1i)", "birth_date(2i)", "birth_date(3i)",
+      :age_birth_checkflg, :age, :gender, :employment, :hobby, :remarks)
   end
 
   # ユーザーのログインを確認する
