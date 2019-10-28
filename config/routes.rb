@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get    '/contact',        to:  'static_pages#contact'
   post   '/users/new',      to:  'users#create'
   get    '/terms',          to:  'static_pages#terms'
+  get    '/privacy',        to:  'static_pages#privacy'
   get    '/login',          to:  'sessions#new'
   post   '/login',          to:  'sessions#create'
   delete '/logout',         to:  'sessions#destroy'
