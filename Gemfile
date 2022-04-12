@@ -53,7 +53,7 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 gem 'bcrypt'
 
-gem 'nokogiri', '~> 1.10.4'
+gem 'nokogiri', '~> 1.13.4'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 
